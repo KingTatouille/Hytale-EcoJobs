@@ -91,6 +91,9 @@ public class JobPlayer {
     }
 
     public JobData getJobData(JobType type) {
+        if (jobs == null) {
+            jobs = new EnumMap<>(JobType.class);
+        }
         return jobs.computeIfAbsent(type, k -> new JobData());
     }
 
