@@ -1,0 +1,192 @@
+{
+    "version": "1.0.0",
+    "xpFormula": "level * 100",
+    "maxLevel": 100,
+    "maxJobs": 3,
+    "showRewardMessages": true,
+    "autoSaveInterval": 300,
+    "pvpKillXp": 100,
+    "pvpKillMoney": 25.0,
+    "blockRewards": {
+        "stone": {
+            "xp": 5,
+            "money": 0.5
+        },
+        "coal_ore": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "iron_ore": {
+            "xp": 15,
+            "money": 2.0
+        },
+        "gold_ore": {
+            "xp": 25,
+            "money": 5.0
+        },
+        "diamond_ore": {
+            "xp": 50,
+            "money": 15.0
+        },
+        "emerald_ore": {
+            "xp": 75,
+            "money": 25.0
+        }
+    },
+    "woodRewards": {
+        "oak_log": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "birch_log": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "spruce_log": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "dark_oak_log": {
+            "xp": 12,
+            "money": 1.2
+        },
+        "jungle_log": {
+            "xp": 10,
+            "money": 1.0
+        }
+    },
+    "cropRewards": {
+        "wheat": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "carrot": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "potato": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "beetroot": {
+            "xp": 6,
+            "money": 0.4
+        },
+        "melon": {
+            "xp": 8,
+            "money": 0.5
+        },
+        "pumpkin": {
+            "xp": 8,
+            "money": 0.5
+        }
+    },
+    "mobRewards": {
+        "pig": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "cow": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "sheep": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "chicken": {
+            "xp": 5,
+            "money": 0.5
+        },
+        "rabbit": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "wolf": {
+            "xp": 15,
+            "money": 2.0
+        },
+        "zombie": {
+            "xp": 12,
+            "money": 1.5
+        },
+        "skeleton": {
+            "xp": 12,
+            "money": 1.5
+        },
+        "spider": {
+            "xp": 10,
+            "money": 1.2
+        },
+        "creeper": {
+            "xp": 20,
+            "money": 3.0
+        }
+    },
+    "legendMobRewards": {
+        "ender_dragon": {
+            "xp": 1000,
+            "money": 500.0
+        },
+        "wither": {
+            "xp": 750,
+            "money": 350.0
+        },
+        "elder_guardian": {
+            "xp": 300,
+            "money": 100.0
+        },
+        "warden": {
+            "xp": 500,
+            "money": 200.0
+        }
+    },
+    "craftRewards": {
+        "iron_sword": {
+            "xp": 20,
+            "money": 3.0
+        },
+        "iron_pickaxe": {
+            "xp": 25,
+            "money": 4.0
+        },
+        "iron_axe": {
+            "xp": 25,
+            "money": 4.0
+        },
+        "iron_chestplate": {
+            "xp": 50,
+            "money": 10.0
+        },
+        "diamond_sword": {
+            "xp": 50,
+            "money": 15.0
+        },
+        "diamond_pickaxe": {
+            "xp": 60,
+            "money": 20.0
+        },
+        "diamond_chestplate": {
+            "xp": 100,
+            "money": 50.0
+        }
+    },
+    "furnitureRewards": {
+        "crafting_table": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "chest": {
+            "xp": 15,
+            "money": 2.0
+        },
+        "bookshelf": {
+            "xp": 25,
+            "money": 5.0
+        },
+        "bed": {
+            "xp": 20,
+            "money": 3.0
+        }
+    }
+}

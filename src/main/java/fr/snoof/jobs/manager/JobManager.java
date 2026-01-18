@@ -175,4 +175,5 @@ public class JobManager {
 
         return (xp * 100.0) / required;
     }
+
 }

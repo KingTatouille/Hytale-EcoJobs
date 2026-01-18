@@ -14,8 +14,6 @@ import fr.snoof.jobs.hook.PermsHook;
 import fr.snoof.jobs.manager.JobManager;
 import fr.snoof.jobs.model.JobPlayer;
 import fr.snoof.jobs.model.JobType;
-import fr.snoof.jobs.ui.JobAdminGui;
-import fr.snoof.jobs.ui.JobsMainGui;
 import fr.snoof.jobs.util.MessageUtil;
 
 import javax.annotation.Nonnull;
@@ -59,8 +57,7 @@ public class JobCommand extends AbstractPlayerCommand {
         String arg1 = parts.length > startIndex + 1 ? parts[startIndex + 1] : "";
 
         switch (subcommand.toLowerCase()) {
-            case "gui", "menu", "" -> handleGui(ref, store, playerRef);
-            case "admin" -> handleAdmin(ref, store, playerRef);
+            case "admin", "create" -> handleAdmin(ref, store, playerRef);
             case "join" -> handleJoin(playerRef, arg1);
             case "leave" -> handleLeave(playerRef, arg1);
             case "list" -> handleList(playerRef);
@@ -72,20 +69,12 @@ public class JobCommand extends AbstractPlayerCommand {
         }
     }
 
-    private void handleGui(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store,
-            @Nonnull PlayerRef playerRef) {
-        Player player = store.getComponent(ref, Player.getComponentType());
-        player.getPageManager().openCustomPage(ref, store, new JobsMainGui(playerRef));
-    }
-
     private void handleAdmin(@Nonnull Ref<EntityStore> ref, @Nonnull Store<EntityStore> store,
             @Nonnull PlayerRef playerRef) {
         if (!PermsHook.hasPermission(playerRef.getUuid(), "jobs.admin")) {
             playerRef.sendMessage(MessageUtil.error(configManager.getMessages().noPermission));
             return;
         }
-        Player player = store.getComponent(ref, Player.getComponentType());
-        player.getPageManager().openCustomPage(ref, store, new JobAdminGui(playerRef));
     }
 
     private void showHelp(PlayerRef playerRef) {

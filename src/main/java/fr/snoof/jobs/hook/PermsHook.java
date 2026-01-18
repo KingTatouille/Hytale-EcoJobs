@@ -1,6 +1,8 @@
 package fr.snoof.jobs.hook;
 
-import fr.snoof.perms.api.PermsAPI;
+import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 
 import java.util.UUID;
 
@@ -10,28 +12,26 @@ public final class PermsHook {
     }
 
     public static boolean isAvailable() {
-        try {
-            return PermsAPI.isAvailable();
-        } catch (NoClassDefFoundError e) {
-            return false;
-        }
+        return true;
     }
 
     public static boolean hasPermission(UUID uuid, String permission) {
-        if (!isAvailable())
-            return true; // Allow if EcoPerms not available
-        return PermsAPI.hasPermission(uuid, permission);
+        for (PlayerRef playerRef : Universe.get().getPlayers()) {
+            if (playerRef.getUuid().equals(uuid)) {
+                Player player = playerRef.getComponent(Player.getComponentType());
+                if (player != null) {
+                    return player.hasPermission(permission);
+                }
+            }
+        }
+        return false;
     }
 
     public static String getPrefix(UUID uuid) {
-        if (!isAvailable())
-            return "";
-        return PermsAPI.getPrefix(uuid);
+        return "";
     }
 
     public static String getGroupName(UUID uuid) {
-        if (!isAvailable())
-            return "default";
-        return PermsAPI.getGroupName(uuid);
+        return "default";
     }
 }

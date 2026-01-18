@@ -1,23 +1,23 @@
 {
-  "Group": "fr.snoof",
-  "Name": "EcoJobs",
-  "Version": "1.0.0",
-  "Description": "Plugin de métiers avec progression XP, récompenses et intégration EcoPerms/EcoMoney",
-  "Authors": [
-    {
-      "Name": "Snoof",
-      "Email": "",
-      "Url": ""
-    }
-  ],
-  "Website": "",
-  "ServerVersion": "*",
-  "Dependencies": {},
-  "OptionalDependencies": {
-    "fr.snoof:EcoPerms": "*",
-    "fr.snoof:EcoMoney": "*"
-  },
-  "DisabledByDefault": false,
-  "IncludesAssetPack": false,
-  "Main": "fr.snoof.jobs.EcoJobsPlugin"
+    "Group": "fr.snoof",
+    "Name": "EcoJobs",
+    "Version": "1.0.0",
+    "Description": "Plugin de métiers avec progression XP, récompenses et intégration EcoPerms/EcoMoney",
+    "Authors": [
+        {
+            "Name": "Snoof",
+            "Email": "",
+            "Url": ""
+        }
+    ],
+    "Website": "",
+    "ServerVersion": "*",
+    "Dependencies": {},
+    "OptionalDependencies": {
+        "fr.snoof:EcoPerms": "*",
+        "fr.snoof:EcoMoney": "*"
+    },
+    "DisabledByDefault": false,
+    "IncludesAssetPack": true,
+    "Main": "fr.snoof.jobs.EcoJobsPlugin"
 }
