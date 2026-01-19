@@ -45,7 +45,7 @@ public class JobDetailsPage extends InteractiveCustomUIPage<Void> {
             @Nonnull UIEventBuilder events,
             @Nonnull Store<EntityStore> store) {
 
-        commands.append("Common/UI/Custom/Pages/JobDetailsPage.ui");
+        commands.append("Pages/JobDetailsPage.ui");
 
         // Basic Info
         commands.set("#job-name", job.getName());

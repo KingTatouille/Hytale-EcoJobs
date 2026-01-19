@@ -49,7 +49,7 @@ public class JobLeaderboardPage extends InteractiveCustomUIPage<JobLeaderboardPa
             @Nonnull Store<EntityStore> store) {
 
         JobsUiHelper.setupBar(ref, commands, events, store);
-        commands.append("Common/UI/Custom/Pages/JobLeaderboardPage.ui");
+        commands.append("Pages/JobLeaderboardPage.ui");
 
         // Render Job List (Sidebar)
         int index = 0;
@@ -92,7 +92,7 @@ public class JobLeaderboardPage extends InteractiveCustomUIPage<JobLeaderboardPa
                 int rank = 1;
                 for (JobManager.Records.TopPlayerEntry entry : topPlayers) {
                     String rowSelector = "#ranking-list-container > Group:nth-child(" + rank + ")";
-                    commands.append("#ranking-list-container", "Common/UI/Custom/JobLeaderboardEntry.ui");
+                    commands.append("#ranking-list-container", "Pages/JobLeaderboardEntry.ui");
 
                     commands.set(rowSelector + " #rank", "#" + rank);
                     commands.set(rowSelector + " #player-name", entry.playerName());

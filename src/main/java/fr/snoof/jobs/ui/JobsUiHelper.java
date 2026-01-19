@@ -18,7 +18,7 @@ public class JobsUiHelper {
 
     public static void setupBar(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder commands,
             @Nonnull UIEventBuilder events, @Nonnull Store<EntityStore> store) {
-        commands.append("Common/UI/Custom/Pages/JobsNavBar.ui");
+        commands.append("Pages/JobsNavBar.ui");
 
         // Bind events for the buttons defined in JobsNavBar.ui
         events.addEventBinding(CustomUIEventBindingType.Activating, "#nav-btn-jobs", EventData.of("NAV", "JOBS"));

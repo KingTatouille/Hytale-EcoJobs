@@ -55,7 +55,7 @@ public class JobMainPage extends InteractiveCustomUIPage<JobMainPage.MainPageDat
         JobsUiHelper.setupBar(ref, commands, events, store);
 
         // Load Main Page UI
-        commands.append("Common/UI/Custom/Pages/JobsMainPage.ui");
+        commands.append("Pages/JobsMainPage.ui");
 
         // Render Jobs
         renderCurrentPage(commands, events);
@@ -78,7 +78,7 @@ public class JobMainPage extends InteractiveCustomUIPage<JobMainPage.MainPageDat
             Job job = jobs.get(i);
             String cardSelector = "#jobs-container > Group:nth-child(" + (i - startIdx + 1) + ")";
 
-            commands.append("#jobs-container", "Common/UI/Custom/Pages/JobCard.ui");
+            commands.append("#jobs-container", "Pages/JobCard.ui");
 
             // Fill Job Data
             commands.set(cardSelector + " #job-icon", job.getIcon());

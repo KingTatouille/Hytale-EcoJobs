@@ -41,7 +41,7 @@ public class JobStatsPage extends InteractiveCustomUIPage<JobStatsPage.StatsPage
             @Nonnull Store<EntityStore> store) {
 
         JobsUiHelper.setupBar(ref, commands, events, store);
-        commands.append("Common/UI/Custom/Pages/JobStatsPage.ui");
+        commands.append("Pages/JobStatsPage.ui");
 
         JobPlayer player = jobManager.getPlayer(playerRef.getUuid());
 
@@ -66,7 +66,7 @@ public class JobStatsPage extends InteractiveCustomUIPage<JobStatsPage.StatsPage
                 continue;
 
             String selector = "#stats-container > Group:nth-child(" + (index + 1) + ")";
-            commands.append("#stats-container", "Common/UI/Custom/JobStatsEntry.ui");
+            commands.append("#stats-container", "Pages/JobStatsEntry.ui");
 
             commands.set(selector + " #job-icon", job.getIcon());
             commands.set(selector + " #job-name", job.getName());
