@@ -36,7 +36,7 @@ public class ConfigManager {
         }
     }
 
-    private void loadConfig() throws IOException {
+    public void loadConfig() throws IOException {
         Path configFile = dataFolder.resolve("config.json");
         if (Files.exists(configFile)) {
             try (Reader reader = Files.newBufferedReader(configFile)) {

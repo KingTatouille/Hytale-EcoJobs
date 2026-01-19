@@ -1,0 +1,73 @@
+Group #job-details-page {
+    LayoutMode: Top;
+    Anchor: (Width: 800, Height: 600);
+    
+    Group #header {
+        LayoutMode: Left;
+        Anchor: (Width: 800, Height: 100);
+        
+        Group #job-icon-container {
+            Anchor: (Width: 80, Height: 80; Left: 20, Top: 10);
+            Label #job-icon {
+                Text: ⛏️;
+                Style: (FontSize: 56; Alignment: Center);
+            }
+        }
+        
+        Group #title-section {
+            LayoutMode: Top;
+            Anchor: (Width: 500, Height: 80; Left: 120, Top: 10);
+            
+            Label #job-name {
+                Text: Nom du Job;
+                Style: (FontSize: 26; Color: #4CAF50; FontWeight: Bold);
+            }
+            
+            Label #job-type {
+                Text: ⛏️ Extraction;
+                Style: (FontSize: 16; Color: #FFD700);
+            }
+        }
+        
+        Group #close-btn {
+            Anchor: (Width: 40, Height: 40; Right: 10, Top: 10);
+            Label {
+                Text: ×;
+                Style: (FontSize: 32; Color: #ff4444; Alignment: Center);
+            }
+        }
+    }
+    
+    Group #content {
+        LayoutMode: Top;
+        Anchor: (Width: 760, Height: 420; Left: 20, Top: 110);
+        ScrollMode: Vertical;
+        
+        Label #job-description {
+            Text: Description du job;
+            Style: (FontSize: 14; Color: #cccccc);
+        }
+    }
+    
+    Group #bottom-bar {
+        LayoutMode: Center;
+        Anchor: (Width: 800, Height: 70; Bottom: 0);
+        
+        Group #back-btn {
+            Anchor: (Width: 120, Height: 45; Left: 20);
+            Label {
+                Text: ← Retour;
+                Style: (FontSize: 16; Color: #ffffff; Alignment: Center);
+            }
+        }
+        
+        Group #join-job-btn {
+            Anchor: (Width: 180, Height: 45);
+            Visible: false;
+            Label {
+                Text: Rejoindre;
+                Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+            }
+        }
+    }
+}

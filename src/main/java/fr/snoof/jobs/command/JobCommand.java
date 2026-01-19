@@ -4,7 +4,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -14,10 +13,10 @@ import fr.snoof.jobs.hook.PermsHook;
 import fr.snoof.jobs.manager.JobManager;
 import fr.snoof.jobs.model.JobPlayer;
 import fr.snoof.jobs.model.JobType;
+import fr.snoof.jobs.ui.JobMainPage;
 import fr.snoof.jobs.util.MessageUtil;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.UUID;
 
 public class JobCommand extends AbstractPlayerCommand {
@@ -58,13 +57,14 @@ public class JobCommand extends AbstractPlayerCommand {
 
         switch (subcommand.toLowerCase()) {
             case "admin", "create" -> handleAdmin(ref, store, playerRef);
+            case "gui" -> handleGui(ref, store, playerRef);
             case "join" -> handleJoin(playerRef, arg1);
             case "leave" -> handleLeave(playerRef, arg1);
-            case "list" -> handleList(playerRef);
             case "info" -> handleInfo(playerRef);
             case "stats" -> handleStats(playerRef, arg1);
             case "top" -> handleTop(playerRef, arg1);
             case "rewards" -> handleRewards(playerRef);
+            case "reload" -> handleReload(playerRef);
             default -> showHelp(playerRef);
         }
     }
@@ -75,116 +75,50 @@ public class JobCommand extends AbstractPlayerCommand {
             playerRef.sendMessage(MessageUtil.error(configManager.getMessages().noPermission));
             return;
         }
+        // Admin GUI or commands could go here
+    }
+
+    private void handleReload(PlayerRef playerRef) {
+        if (!PermsHook.hasPermission(playerRef.getUuid(), "jobs.admin")) {
+            playerRef.sendMessage(MessageUtil.error(configManager.getMessages().noPermission));
+            return;
+        }
+        jobManager.reload();
+        playerRef.sendMessage(MessageUtil.success("Configuration rechargée."));
     }
 
     private void showHelp(PlayerRef playerRef) {
         playerRef.sendMessage(MessageUtil.info("=== Commandes Métiers ==="));
-        playerRef.sendMessage(MessageUtil.raw("  §e/job §7ou §e/job gui §7- Ouvrir l'interface graphique"));
-        playerRef.sendMessage(MessageUtil.raw("  §e/job admin §7- Panel d'administration (admin)"));
-        playerRef.sendMessage(MessageUtil.raw("  §e/job join <métier> §7- Rejoindre un métier"));
-        playerRef.sendMessage(MessageUtil.raw("  §e/job leave <métier> §7- Quitter un métier"));
-        playerRef.sendMessage(MessageUtil.raw("  §e/job list §7- Voir vos métiers actifs"));
-        playerRef.sendMessage(MessageUtil.raw("  §e/job info §7- Voir tous vos niveaux"));
+        playerRef.sendMessage(MessageUtil.raw("  §e/job §7- Ouvrir l'interface graphique"));
         playerRef.sendMessage(MessageUtil.raw("  §e/job stats <métier> §7- Stats détaillées"));
         playerRef.sendMessage(MessageUtil.raw("  §e/job top [métier] §7- Classement"));
         playerRef.sendMessage(MessageUtil.raw("  §e/job rewards §7- Liste des récompenses"));
     }
 
     private void handleJoin(PlayerRef playerRef, String jobName) {
-        UUID uuid = playerRef.getUuid();
-        var msg = configManager.getMessages();
-
         if (jobName.isEmpty()) {
             playerRef.sendMessage(MessageUtil.error("Usage: /job join <métier>"));
-            showJobList(playerRef);
             return;
         }
 
-        JobType type = JobType.fromString(jobName);
-        if (type == null) {
-            playerRef.sendMessage(MessageUtil.error(
-                    String.format(msg.invalidJob, jobName)));
-            showJobList(playerRef);
-            return;
+        if (jobManager.assignJob(playerRef, jobName)) {
+            playerRef.sendMessage(MessageUtil.success("Job rejoint!"));
+        } else {
+            playerRef.sendMessage(MessageUtil.error("Impossible de rejoindre ce job (déjà rejoint ? ou invalide)."));
         }
-
-        JobPlayer player = jobManager.getOrCreatePlayer(uuid, playerRef.getUsername());
-
-        // Check if already joined
-        if (player.hasJoinedJob(type)) {
-            playerRef.sendMessage(MessageUtil.error(msg.jobAlreadyJoined));
-            return;
-        }
-
-        // Check max jobs limit
-        int maxJobs = configManager.getConfig().maxJobs;
-        if (player.getJoinedJobCount() >= maxJobs) {
-            playerRef.sendMessage(MessageUtil.error(String.format(msg.jobLimitReached, maxJobs)));
-            return;
-        }
-
-        // Join the job
-        player.joinJob(type);
-        playerRef.sendMessage(MessageUtil.success(String.format(msg.jobJoined, type.getDisplayName())));
     }
 
     private void handleLeave(PlayerRef playerRef, String jobName) {
-        UUID uuid = playerRef.getUuid();
-        var msg = configManager.getMessages();
-
         if (jobName.isEmpty()) {
             playerRef.sendMessage(MessageUtil.error("Usage: /job leave <métier>"));
-            handleList(playerRef);
             return;
         }
 
-        JobType type = JobType.fromString(jobName);
-        if (type == null) {
-            playerRef.sendMessage(MessageUtil.error(
-                    String.format(msg.invalidJob, jobName)));
-            showJobList(playerRef);
-            return;
+        if (jobManager.removeJob(playerRef, jobName)) {
+            playerRef.sendMessage(MessageUtil.info("Job quitté."));
+        } else {
+            playerRef.sendMessage(MessageUtil.error("Impossible de quitter ce job (non rejoint ? ou invalide)."));
         }
-
-        JobPlayer player = jobManager.getOrCreatePlayer(uuid, playerRef.getUsername());
-
-        // Check if joined
-        if (!player.hasJoinedJob(type)) {
-            playerRef.sendMessage(MessageUtil.error(msg.jobNotJoined));
-            return;
-        }
-
-        // Leave the job
-        player.leaveJob(type);
-        playerRef.sendMessage(MessageUtil.info(String.format(msg.jobLeft, type.getDisplayName())));
-    }
-
-    private void handleList(PlayerRef playerRef) {
-        UUID uuid = playerRef.getUuid();
-        var msg = configManager.getMessages();
-        JobPlayer player = jobManager.getOrCreatePlayer(uuid, playerRef.getUsername());
-
-        var joinedJobs = player.getJoinedJobs();
-        if (joinedJobs.isEmpty()) {
-            playerRef.sendMessage(MessageUtil.info(msg.noJobsJoined));
-            playerRef.sendMessage(MessageUtil.raw("§7Utilisez §e/job join <métier> §7pour en rejoindre un."));
-            showJobList(playerRef);
-            return;
-        }
-
-        playerRef.sendMessage(MessageUtil.info(msg.yourJobs));
-        for (JobType type : joinedJobs) {
-            int level = player.getLevel(type);
-            long xp = player.getExperience(type);
-            long required = jobManager.getXpRequired(level);
-            String entry = String.format("  %s §7- Niveau §e%d §7(§b%d§7/§b%d §7XP)",
-                    type.getDisplayName(), level, xp, required);
-            playerRef.sendMessage(MessageUtil.raw(entry, type.getColor()));
-        }
-
-        int maxJobs = configManager.getConfig().maxJobs;
-        playerRef.sendMessage(MessageUtil.raw(String.format("§7Métiers: §e%d§7/§6%d",
-                joinedJobs.size(), maxJobs)));
     }
 
     private void handleInfo(PlayerRef playerRef) {
@@ -207,21 +141,17 @@ public class JobCommand extends AbstractPlayerCommand {
     private void handleStats(PlayerRef playerRef, String jobName) {
         if (jobName.isEmpty()) {
             playerRef.sendMessage(MessageUtil.error("Usage: /job stats <métier>"));
-            showJobList(playerRef);
             return;
         }
 
         JobType type = JobType.fromString(jobName);
         if (type == null) {
-            playerRef.sendMessage(MessageUtil.error(
-                    String.format(configManager.getMessages().invalidJob, jobName)));
-            showJobList(playerRef);
+            playerRef.sendMessage(MessageUtil.error("Job invalide."));
             return;
         }
 
         UUID uuid = playerRef.getUuid();
         JobPlayer player = jobManager.getOrCreatePlayer(uuid, playerRef.getUsername());
-        var msg = configManager.getMessages();
 
         int level = player.getLevel(type);
         long xp = player.getExperience(type);
@@ -229,60 +159,25 @@ public class JobCommand extends AbstractPlayerCommand {
         long totalXp = player.getTotalExperience(type);
         double progress = jobManager.getProgressPercent(uuid, type);
 
-        playerRef.sendMessage(MessageUtil.info(String.format(msg.statsHeader, type.getDisplayName())));
-        playerRef.sendMessage(MessageUtil.raw(String.format(msg.statsLevel, level), type.getColor()));
-        playerRef.sendMessage(MessageUtil.raw(String.format(msg.statsXp, xp, required)));
-        playerRef.sendMessage(MessageUtil.raw(String.format(msg.statsTotal, totalXp)));
-        playerRef.sendMessage(MessageUtil.raw(String.format(msg.statsProgress, progress)));
+        playerRef.sendMessage(MessageUtil.info(String.format("Stats: %s", type.getDisplayName())));
+        playerRef.sendMessage(MessageUtil.raw(String.format("Niveau: %d", level), type.getColor()));
+        playerRef.sendMessage(MessageUtil.raw(String.format("XP: %d / %d", xp, required)));
+        playerRef.sendMessage(MessageUtil.raw(String.format("Total XP: %d", totalXp)));
+        playerRef.sendMessage(MessageUtil.raw(String.format("Progression: %.1f%%", progress)));
     }
 
     private void handleTop(PlayerRef playerRef, String jobName) {
-        JobType type = JobType.MINER; // Default
-        if (!jobName.isEmpty()) {
-            type = JobType.fromString(jobName);
-            if (type == null) {
-                playerRef.sendMessage(MessageUtil.error(
-                        String.format(configManager.getMessages().invalidJob, jobName)));
-                showJobList(playerRef);
-                return;
-            }
-        }
-
-        var msg = configManager.getMessages();
-        List<JobPlayer> topPlayers = jobManager.getTopPlayers(type, 10);
-
-        playerRef.sendMessage(MessageUtil.info(String.format(msg.topHeader, type.getDisplayName())));
-
-        if (topPlayers.isEmpty()) {
-            playerRef.sendMessage(MessageUtil.raw("  §7Aucun joueur classé"));
-            return;
-        }
-
-        int rank = 1;
-        for (JobPlayer player : topPlayers) {
-            playerRef.sendMessage(MessageUtil.raw(String.format(msg.topEntry,
-                    rank, player.getName(), player.getLevel(type))));
-            rank++;
-        }
+        playerRef.sendMessage(MessageUtil.info("Voir le classement dans l'interface /job"));
     }
 
     private void handleRewards(PlayerRef playerRef) {
         playerRef.sendMessage(MessageUtil.info("=== Récompenses par Métier ==="));
-
         for (JobType type : JobType.values()) {
-            playerRef.sendMessage(MessageUtil.raw(""));
             playerRef.sendMessage(MessageUtil.raw("§6" + type.getDisplayName() + " §7- " + type.getDescription()));
         }
-
-        playerRef.sendMessage(MessageUtil.raw(""));
-        playerRef.sendMessage(MessageUtil.raw("§7Les récompenses dépendent des blocs/mobs/crafts."));
-        playerRef.sendMessage(MessageUtil.raw("§7Consultez la documentation pour les détails."));
     }
 
-    private void showJobList(PlayerRef playerRef) {
-        playerRef.sendMessage(MessageUtil.raw("§7Métiers disponibles:"));
-        for (JobType type : JobType.values()) {
-            playerRef.sendMessage(MessageUtil.raw("  §e" + type.name() + " §7(" + type.getDisplayName() + ")"));
-        }
+    private void handleGui(Ref<EntityStore> ref, Store<EntityStore> store, PlayerRef playerRef) {
+        new JobMainPage(ref, store, playerRef, jobManager).open();
     }
 }

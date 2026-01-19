@@ -1,0 +1,40 @@
+Group #leaderboard-entry {
+    LayoutMode: Left;
+    Anchor: (Width: 620, Height: 50; Margin: (Bottom: 5));
+    
+    // Gradient or background logic usually handled by adding a panel behind, 
+    // but for simplicity we rely on text alignment.
+    
+    Label #rank {
+        Text: #1;
+        Style: (FontSize: 20; Color: #FFD700; Width: 50; Alignment: Center);
+        Anchor: (Top: 15);
+    }
+    
+    Group #avatar-placeholder {
+         Anchor: (Width: 32, Height: 32; Left: 60, Top: 9);
+         // Image would go here, using a generic icon for now
+          Label {
+            Text: 👤;
+            Style: (FontSize: 20);
+        }
+    }
+    
+    Label #player-name {
+        Text: PlayerName;
+        Style: (FontSize: 18; Color: #ffffff; Width: 200);
+        Anchor: (Left: 100, Top: 15);
+    }
+    
+    Label #level {
+        Text: Lvl 100;
+        Style: (FontSize: 16; Color: #4CAF50; Width: 100);
+        Anchor: (Left: 310, Top: 15);
+    }
+    
+     Label #xp {
+        Text: 1,000,000 XP;
+        Style: (FontSize: 16; Color: #aaaaaa; Width: 150; Alignment: Right);
+        Anchor: (Right: 10, Top: 15);
+    }
+}

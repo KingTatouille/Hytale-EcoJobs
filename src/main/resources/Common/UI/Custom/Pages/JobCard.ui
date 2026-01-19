@@ -1,0 +1,81 @@
+Group #job-card {
+    LayoutMode: Left;
+    Anchor: (Width: 850, Height: 120);
+    
+    Group #job-icon-container {
+        Anchor: (Width: 80, Height: 80; Left: 15, Top: 20);
+        
+        Label #job-icon {
+            Text: ⛏️;
+            Style: (FontSize: 48; Alignment: Center);
+        }
+    }
+    
+    Group #job-info {
+        LayoutMode: Top;
+        Anchor: (Width: 400, Height: 100; Left: 110, Top: 10);
+        
+        Label #job-name {
+            Text: Nom du Job;
+            Style: (FontSize: 20; Color: #4CAF50; FontWeight: Bold);
+        }
+        
+        Label #job-description {
+            Text: Description du job;
+            Style: (FontSize: 14; Color: #cccccc);
+        }
+        
+        Label #required-level {
+            Text: Niveau requis: 0;
+            Style: (FontSize: 12; Color: #FFD700);
+            Visible: false;
+        }
+    }
+    
+    Group #job-stats {
+        LayoutMode: Top;
+        Anchor: (Width: 180, Height: 100; Left: 530, Top: 10);
+        
+        Label #base-salary {
+            Text: Salaire: 100$/h;
+            Style: (FontSize: 13; Color: #ffffff);
+        }
+        
+        Label #xp-per-action {
+            Text: XP: +10 par action;
+            Style: (FontSize: 13; Color: #ffffff);
+        }
+        
+        Label #player-count {
+            Text: 0 joueur(s);
+            Style: (FontSize: 12; Color: #999999);
+        }
+        
+        Label #job-status {
+            Text: ✓ Disponible;
+            Style: (FontSize: 12; Color: #4CAF50; FontWeight: Bold);
+        }
+    }
+    
+    Group #job-actions {
+        LayoutMode: Top;
+        Anchor: (Width: 120, Height: 100; Right: 15, Top: 10);
+        
+        Group #view-details-btn {
+            Anchor: (Width: 110, Height: 35);
+            Label {
+                Text: Détails;
+                Style: (FontSize: 14; Color: #ffffff; Alignment: Center);
+            }
+        }
+        
+        Group #join-btn {
+            Anchor: (Width: 110, Height: 35; Top: 45);
+            Visible: true;
+            Label {
+                Text: Rejoindre;
+                Style: (FontSize: 14; Color: #ffffff; Alignment: Center);
+            }
+        }
+    }
+}

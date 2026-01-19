@@ -1,0 +1,36 @@
+Group #jobs-navbar {
+    LayoutMode: Left;
+    Anchor: (Width: 900, Height: 60; Top: 20; Left: 20);
+    
+    Group #nav-btn-jobs {
+        Anchor: (Width: 150, Height: 50);
+        Label {
+            Text: 🛒 Jobs;
+            Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+        }
+    }
+    
+    Group #nav-btn-stats {
+        Anchor: (Width: 150, Height: 50; Left: 10);
+        Label {
+            Text: 📊 Mes Stats;
+            Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+        }
+    }
+    
+    Group #nav-btn-leaderboard {
+        Anchor: (Width: 150, Height: 50; Left: 10);
+        Label {
+            Text: 🏆 Classement;
+            Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+        }
+    }
+    
+     Group #nav-btn-close {
+        Anchor: (Width: 50, Height: 50; Right: 0);
+        Label {
+            Text: ❌;
+            Style: (FontSize: 24; Color: #ff4444; Alignment: Center);
+        }
+    }
+}

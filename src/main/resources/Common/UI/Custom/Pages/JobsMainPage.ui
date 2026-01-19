@@ -1,0 +1,43 @@
+Group #jobs-main-page {
+    LayoutMode: Top;
+    Anchor: (Width: 900, Height: 600);
+    
+    // Header space reserved for NavBar (Height ~80)
+    
+    Group #content-header {
+         LayoutMode: Center;
+         Anchor: (Width: 900, Height: 60; Top: 80);
+         
+         Label #page-title {
+            Text: Jobs Disponibles;
+            Style: (FontSize: 24; Color: #4CAF50; FontWeight: Bold);
+        }
+    }
+    
+    Group #jobs-container {
+        LayoutMode: Top;
+        Anchor: (Width: 860, Height: 400; Left: 20, Top: 140);
+        ScrollMode: Vertical;
+    }
+    
+    Group #pagination-bar {
+        LayoutMode: Center;
+        Anchor: (Width: 900, Height: 60; Bottom: 0);
+        
+        Group #prev-page-btn {
+            Anchor: (Width: 120, Height: 40; Left: 20);
+            Label {
+                Text: ◀ Précédent;
+                Style: (FontSize: 16; Color: #ffffff; Alignment: Center);
+            }
+        }
+    
+        Group #next-page-btn {
+            Anchor: (Width: 120, Height: 40; Right: 20);
+            Label {
+                Text: Suivant ▶;
+                Style: (FontSize: 16; Color: #ffffff; Alignment: Center);
+            }
+        }
+    }
+}

@@ -1,14 +1,21 @@
 package fr.snoof.jobs.manager;
 
+import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import fr.snoof.jobs.config.ConfigManager;
 import fr.snoof.jobs.hook.EconomyHook;
+import fr.snoof.jobs.model.Job;
 import fr.snoof.jobs.model.JobData;
 import fr.snoof.jobs.model.JobPlayer;
 import fr.snoof.jobs.model.JobReward;
 import fr.snoof.jobs.model.JobType;
 import fr.snoof.jobs.util.MessageUtil;
 
+import javax.annotation.Nonnull;
+
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -16,9 +23,88 @@ import java.util.stream.Collectors;
 public class JobManager {
     private final Map<UUID, JobPlayer> players = new ConcurrentHashMap<>();
     private final ConfigManager configManager;
+    private final List<Job> jobs;
 
     public JobManager(ConfigManager configManager) {
         this.configManager = configManager;
+        this.jobs = new ArrayList<>();
+        initJobs();
+    }
+
+    private void initJobs() {
+        jobs.add(new Job(JobType.FARMER, "🌾", 0, 100, 10));
+        jobs.add(new Job(JobType.HUNTER, "🏹", 0, 100, 10));
+        jobs.add(new Job(JobType.CHAMPION, "⚔️", 0, 100, 10));
+        jobs.add(new Job(JobType.MINER, "⛏️", 0, 100, 10));
+        jobs.add(new Job(JobType.BLACKSMITH, "🔨", 0, 100, 10));
+        jobs.add(new Job(JobType.LUMBERJACK, "🪓", 0, 100, 10));
+    }
+
+    public List<Job> getAllJobs() {
+        return Collections.unmodifiableList(jobs);
+    }
+
+    public Job getJob(String id) {
+        return jobs.stream()
+                .filter(j -> j.getId().equalsIgnoreCase(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public int getPlayerCountForJob(String jobId) {
+        JobType type = JobType.fromString(jobId);
+        if (type == null)
+            return 0;
+
+        return (int) players.values().stream()
+                .filter(p -> p.hasJoinedJob(type))
+                .count();
+    }
+
+    public boolean assignJob(PlayerRef playerRef, String jobId) {
+        JobType type = JobType.fromString(jobId);
+        if (type == null)
+            return false;
+
+        JobPlayer player = getOrCreatePlayer(
+                playerRef.getUuid(),
+                playerRef.getUsername());
+
+        return player.joinJob(type);
+    }
+
+    public boolean removeJob(@Nonnull PlayerRef playerRef, @Nonnull String jobId) {
+        JobType type = JobType.fromString(jobId);
+        if (type == null)
+            return false;
+
+        JobPlayer player = getPlayers().get(playerRef.getUuid());
+        return player != null && player.leaveJob(type);
+    }
+
+    public JobData getPlayerJobData(@Nonnull PlayerRef playerRef, @Nonnull String jobId) {
+        JobType type = JobType.fromString(jobId);
+        if (type == null)
+            return null;
+
+        JobPlayer player = getPlayers().get(playerRef.getUuid());
+        if (player == null || !player.hasJoinedJob(type))
+            return null;
+
+        return player.getJobData(type);
+    }
+
+    public int getPlayerLevel(@Nonnull PlayerRef playerRef, @Nonnull String jobId) {
+        JobType type = JobType.fromString(jobId);
+        if (type == null)
+            return 0;
+
+        JobPlayer player = players.get(playerRef.getUuid());
+        return player != null ? player.getLevel(type) : 0;
+    }
+
+    public Map<UUID, JobPlayer> getPlayers() {
+        return players;
     }
 
     public JobPlayer getPlayer(UUID uuid) {
@@ -49,13 +135,18 @@ public class JobManager {
     }
 
     public long getXpRequired(int level) {
-        // Formula: level * 100
         return (long) level * 100;
+    }
+
+    public int getRequiredXPForNextLevel(int currentLevel) {
+        return (int) getXpRequired(currentLevel);
     }
 
     public boolean addXp(UUID uuid, String playerName, JobType type, long xp, PlayerRef playerRef) {
         JobPlayer player = getOrCreatePlayer(uuid, playerName);
         player.addExperience(type, xp);
+        player.getJobData(type).incrementActions();
+        player.getJobData(type).updateLastAction();
         player.updateLastSeen();
 
         return checkLevelUp(player, type, playerRef);
@@ -65,22 +156,18 @@ public class JobManager {
         if (reward == null)
             return;
 
-        // Check if player has joined this job
         JobPlayer player = getOrCreatePlayer(uuid, playerName);
         if (!player.hasJoinedJob(type)) {
-            // Player hasn't joined this job, no reward
             return;
         }
 
-        // Add XP
         boolean leveledUp = addXp(uuid, playerName, type, reward.getXp(), playerRef);
 
-        // Add money
         if (reward.getMoney() > 0) {
             EconomyHook.addBalance(uuid, reward.getMoney());
+            player.getJobData(type).addEarnings((long) reward.getMoney()); // Fixed cast
         }
 
-        // Show message if enabled
         if (configManager.getConfig().showRewardMessages && playerRef != null && !leveledUp) {
             if (reward.getXp() > 0) {
                 playerRef.sendMessage(MessageUtil.raw(
@@ -149,8 +236,13 @@ public class JobManager {
         }
     }
 
-    public List<JobPlayer> getTopPlayers(JobType type, int limit) {
+    public List<Records.TopPlayerEntry> getTopPlayersForJob(String jobId, int limit) {
+        JobType type = JobType.fromString(jobId);
+        if (type == null)
+            return Collections.emptyList();
+
         return players.values().stream()
+                .filter(p -> p.hasJoinedJob(type))
                 .sorted((a, b) -> {
                     int levelCompare = Integer.compare(b.getLevel(type), a.getLevel(type));
                     if (levelCompare != 0)
@@ -158,6 +250,7 @@ public class JobManager {
                     return Long.compare(b.getTotalExperience(type), a.getTotalExperience(type));
                 })
                 .limit(limit)
+                .map(p -> new Records.TopPlayerEntry(p.getName(), p.getLevel(type), p.getTotalExperience(type)))
                 .collect(Collectors.toList());
     }
 
@@ -176,4 +269,20 @@ public class JobManager {
         return (xp * 100.0) / required;
     }
 
+    public void reload() {
+        try {
+            configManager.loadConfig();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getPlayerName(PlayerRef playerRef) {
+        return playerRef.getUsername();
+    }
+
+    public static class Records {
+        public record TopPlayerEntry(String playerName, int level, long totalXP) {
+        }
+    }
 }

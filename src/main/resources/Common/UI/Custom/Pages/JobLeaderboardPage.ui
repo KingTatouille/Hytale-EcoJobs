@@ -1,0 +1,45 @@
+Group #leaderboard-page {
+    LayoutMode: Top;
+    Anchor: (Width: 900, Height: 600);
+    
+    // Header (Navbar space ~80)
+    
+    Group #content {
+        LayoutMode: Left;
+        Anchor: (Width: 900, Height: 460; Top: 80);
+        
+        // Left Sidebar: Job List
+        Group #job-list-panel {
+            LayoutMode: Top;
+            Anchor: (Width: 200, Height: 440; Left: 20);
+            
+            Label {
+                Text: Sélectionner Job;
+                Style: (FontSize: 16; Color: #888888; Margin: (Bottom: 10));
+            }
+            
+            Group #job-buttons-container {
+                LayoutMode: Top;
+                Anchor: (Width: 200, Height: 400);
+                ScrollMode: Vertical;
+            }
+        }
+        
+        // Right Panel: Rankings
+        Group #ranking-panel {
+            LayoutMode: Top;
+            Anchor: (Width: 640, Height: 440; Left: 240);
+            
+            Label #selected-job-title {
+                Text: Classement - Paysan;
+                Style: (FontSize: 24; Color: #FFD700; FontWeight: Bold; Margin: (Bottom: 20));
+            }
+            
+            Group #ranking-list-container {
+                LayoutMode: Top;
+                Anchor: (Width: 640, Height: 380);
+                ScrollMode: Vertical;
+            }
+        }
+    }
+}

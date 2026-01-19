@@ -1,0 +1,24 @@
+Group #job-stats-page {
+    LayoutMode: Top;
+    Anchor: (Width: 900, Height: 600);
+    
+    // Header space reserved for NavBar (Height ~80)
+    
+    Group #content-header {
+         LayoutMode: Center;
+         Anchor: (Width: 900, Height: 60; Top: 80);
+         
+         Label {
+            Text: Mes Statistiques;
+            Style: (FontSize: 24; Color: #FFD700; FontWeight: Bold);
+        }
+    }
+    
+    Group #stats-container {
+        LayoutMode: Top;
+        Anchor: (Width: 860, Height: 440; Left: 20, Top: 140);
+        ScrollMode: Vertical;
+    }
+    
+
+}
