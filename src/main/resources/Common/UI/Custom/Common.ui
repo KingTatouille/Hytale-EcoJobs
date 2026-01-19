@@ -1,0 +1,26 @@
+@PageOverlay = Group {
+    LayoutMode: Center;
+    Anchor: (Fill: true);
+    Background: (Color: #000000AA);
+};
+
+@DecoratedContainer = Group {
+    LayoutMode: Top;
+    Background: (Color: #1a1a1a);
+    Padding: (Full: 0);
+};
+
+@DefaultScrollbarStyle = ScrollbarStyle {
+    ThumbColor: #4CAF50;
+    TrackColor: #333333;
+};
+
+@BackButton = Group {
+    Anchor: (Width: 100, Height: 40, Left: 20, Bottom: 20);
+    Background: (Color: #555555);
+    
+    Label {
+        Text: "Retour";
+        Style: (FontSize: 14, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+    }
+};

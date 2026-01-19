@@ -18,14 +18,13 @@ public class JobsUiHelper {
 
     public static void setupBar(@Nonnull Ref<EntityStore> ref, @Nonnull UICommandBuilder commands,
             @Nonnull UIEventBuilder events, @Nonnull Store<EntityStore> store) {
-        commands.append("Pages/JobsNavBar.ui");
 
         // Bind events for the buttons defined in JobsNavBar.ui
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#nav-btn-jobs", EventData.of("NAV", "JOBS"));
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#nav-btn-stats", EventData.of("NAV", "STATS"));
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#nav-btn-leaderboard",
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#navBtnJobs", EventData.of("NAV", "JOBS"));
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#navBtnStats", EventData.of("NAV", "STATS"));
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#navBtnLeaderboard",
                 EventData.of("NAV", "LEADERBOARD"));
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#nav-btn-close", EventData.of("NAV", "CLOSE"));
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#navBtnClose", EventData.of("NAV", "CLOSE"));
     }
 
     public static boolean handleData(@Nonnull PlayerRef playerRef, @Nonnull Ref<EntityStore> ref,

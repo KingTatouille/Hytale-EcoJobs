@@ -61,39 +61,58 @@ public class JobMainPage extends InteractiveCustomUIPage<JobMainPage.MainPageDat
         renderCurrentPage(commands, events);
 
         // Pagination Events
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#prev-page-btn",
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#prevPageBtn",
                 EventData.of("ACTION", "PREV_PAGE"));
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#next-page-btn",
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#nextPageBtn",
                 EventData.of("ACTION", "NEXT_PAGE"));
     }
 
     private void renderCurrentPage(UICommandBuilder commands, UIEventBuilder events) {
-        // Clear container
-        commands.clear("#jobs-container");
+        commands.clear("#jobsContent");
 
         int startIdx = currentPage * JOBS_PER_PAGE;
         int endIdx = Math.min(startIdx + JOBS_PER_PAGE, jobs.size());
 
         for (int i = startIdx; i < endIdx; i++) {
             Job job = jobs.get(i);
-            String cardSelector = "#jobs-container > Group:nth-child(" + (i - startIdx + 1) + ")";
-
-            commands.append("#jobs-container", "Pages/JobCard.ui");
-
-            // Fill Job Data
-            commands.set(cardSelector + " #job-icon", job.getIcon());
-            commands.set(cardSelector + " #job-name", job.getName());
-            commands.set(cardSelector + " #job-description", job.getDescription());
-            commands.set(cardSelector + " #base-salary", "Salaire: " + job.getBaseSalary() + "$/h");
-            commands.set(cardSelector + " #xp-per-action", "XP: +" + job.getXpPerAction() + " par action");
-
             int playerCount = jobManager.getPlayerCountForJob(job.getId());
-            commands.set(cardSelector + " #player-count", playerCount + " joueur(s)");
 
-            // Button Events
-            events.addEventBinding(CustomUIEventBindingType.Activating, cardSelector + " #view-details-btn",
+            // Créer la carte inline
+            commands.appendInline("#jobsContent",
+                    "Group { " +
+                            "   LayoutMode: Top; " +
+                            "   Anchor: (Width: 860, Height: 150, Margin: (Bottom: 10)); " +
+                            "   Padding: (Full: 15); " +
+                            "   Background: (Color: #2c2c2c); " +
+                            "   " +
+                            "   Group #card" + i + " { " +
+                            "       LayoutMode: Top; " +
+                            "       Anchor: (Width: 830); " +
+                            "       " +
+                            "       Label #jobName { Text: \"" + job.getIcon() + " " + job.getName()
+                            + "\"; Style: (FontSize: 20, TextColor: #4CAF50, RenderBold: true); } " +
+                            "       Label #jobDescription { Text: \"" + job.getDescription()
+                            + "\"; Style: (FontSize: 14, TextColor: #cccccc); Padding: (Top: 5); } " +
+                            "       Label #stats { Text: \"Salaire: " + job.getBaseSalary() + "$/h | XP: +"
+                            + job.getXpPerAction() + " | " + playerCount
+                            + " joueur(s)\"; Style: (FontSize: 12, TextColor: #aaaaaa); Padding: (Top: 5); } " +
+                            "       " +
+                            "       Group #buttons { " +
+                            "           LayoutMode: Left; " +
+                            "           Anchor: (Top: 10, Height: 35); " +
+                            "           Group #joinBtn { Anchor: (Width: 100, Height: 35, Right: 10); Background: (Color: #4CAF50); Label { Text: \"Rejoindre\"; Style: (FontSize: 14, TextColor: #ffffff, HorizontalAlignment: Center); } } "
+                            +
+                            "           Group #viewDetailsBtn { Anchor: (Width: 100, Height: 35); Background: (Color: #2196F3); Label { Text: \"Détails\"; Style: (FontSize: 14, TextColor: #ffffff, HorizontalAlignment: Center); } } "
+                            +
+                            "       } " +
+                            "   } " +
+                            "}");
+
+            String cardSelector = "#jobsContent > Group:nth-child(" + (i - startIdx + 1) + ") #card" + i;
+
+            events.addEventBinding(CustomUIEventBindingType.Activating, cardSelector + " #buttons #viewDetailsBtn",
                     EventData.of("JOB_DETAILS", job.getId()));
-            events.addEventBinding(CustomUIEventBindingType.Activating, cardSelector + " #join-btn",
+            events.addEventBinding(CustomUIEventBindingType.Activating, cardSelector + " #buttons #joinBtn",
                     EventData.of("JOB_JOIN", job.getId()));
         }
     }

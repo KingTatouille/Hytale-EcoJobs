@@ -6,7 +6,6 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
@@ -18,7 +17,6 @@ import fr.snoof.jobs.model.Job;
 import fr.snoof.jobs.model.JobData;
 import fr.snoof.jobs.model.JobPlayer;
 import fr.snoof.jobs.model.JobType;
-import fr.snoof.jobs.util.MessageUtil;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -46,8 +44,8 @@ public class JobStatsPage extends InteractiveCustomUIPage<JobStatsPage.StatsPage
         JobPlayer player = jobManager.getPlayer(playerRef.getUuid());
 
         if (player == null || player.getJobs().isEmpty()) {
-            commands.appendInline("#stats-container",
-                    "Label { Text: Vous n'avez rejoint aucun job.; Style: (FontSize: 18; Color: #aaaaaa; Alignment: Center); Margin: (Top: 50); }");
+            commands.appendInline("#statsContent",
+                    "Label { Text: \"Vous n'avez rejoint aucun job.\"; Style: (FontSize: 18, TextColor: #aaaaaa, HorizontalAlignment: Center); Padding: (Top: 50); }");
             return;
         }
 
@@ -56,31 +54,26 @@ public class JobStatsPage extends InteractiveCustomUIPage<JobStatsPage.StatsPage
             JobType type = entry.getKey();
             JobData data = entry.getValue();
             Job job = jobManager.getJob(type.name());
-            // Note: JobType.name() might not match job ID exactly if casing differs,
-            // but usually enum names are upper case. Job IDs in manager init were also
-            // likely uppercase or consistent.
-            // Let's check JobManager init: jobs.add(new Job(JobType.FARMER...)); -> ID is
-            // typically the enum name.
 
             if (job == null)
                 continue;
 
-            String selector = "#stats-container > Group:nth-child(" + (index + 1) + ")";
-            commands.append("#stats-container", "Pages/JobStatsEntry.ui");
+            // D'abord append l'entrée
+            commands.append("#statsContent", "Pages/JobStatsEntry.ui");
 
-            commands.set(selector + " #job-icon", job.getIcon());
-            commands.set(selector + " #job-name", job.getName());
-            commands.set(selector + " #job-level", "Niveau " + data.getLevel());
+            // Ensuite set les valeurs (index + 1 car nth-child commence à 1)
+            String selector = "#statsContent > Group:nth-child(" + (index + 1) + ")";
+            commands.set(selector + " #jobIcon", job.getIcon());
+            commands.set(selector + " #jobName", job.getName());
+            commands.set(selector + " #jobLevel", "Niveau " + data.getLevel());
 
             long currentXp = data.getExperience();
             long requiredXp = jobManager.getXpRequired(data.getLevel());
             double percent = jobManager.getProgressPercent(playerRef.getUuid(), type);
 
-            commands.set(selector + " #xp-text", "XP: " + currentXp + " / " + requiredXp);
-            commands.set(selector + " #percent-text", String.format("Progression: %.1f%%", percent));
-            commands.set(selector + " #earnings-text", "Gains totaux: " + data.getTotalEarnings() + "$"); // Assuming
-                                                                                                          // getEarnings
-                                                                                                          // exists
+            commands.set(selector + " #xpText", "XP: " + currentXp + " / " + requiredXp);
+            commands.set(selector + " #percentText", String.format("Progression: %.1f%%", percent));
+            commands.set(selector + " #earningsText", "Gains totaux: " + data.getTotalEarnings() + "$");
 
             index++;
         }

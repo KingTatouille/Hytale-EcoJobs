@@ -52,59 +52,54 @@ public class JobLeaderboardPage extends InteractiveCustomUIPage<JobLeaderboardPa
         commands.append("Pages/JobLeaderboardPage.ui");
 
         // Render Job List (Sidebar)
-        int index = 0;
         List<Job> jobs = jobManager.getAllJobs();
-        for (Job job : jobs) {
-            String selector = "#job-buttons-container > Group:nth-child(" + (index + 1) + ")";
-            // We can use a simple button template or just render a label generic if we had
-            // one.
-            // Let's create a quick inline generic button since we didn't make a file for
-            // this sidebar item.
-            // Or better, define it inline.
+        for (int index = 0; index < jobs.size(); index++) {
+            Job job = jobs.get(index);
 
             // Check if selected
             String color = job.getId().equals(selectedJobId) ? "#4CAF50" : "#555555";
 
-            commands.appendInline("#job-buttons-container",
-                    "Group { Anchor: (Width: 180, Height: 40; Margin: (Bottom: 5)); " +
-                            "   Group #btn-" + index + " { Anchor: (Width: 180, Height: 40); " +
-                            "       Label { Text: " + job.getIcon() + " " + job.getName()
-                            + "; Style: (FontSize: 14; Color: #ffffff; Alignment: Center); } " +
-                            "       Background { Color: " + color + "; } " +
+            // D'abord append l'élément
+            commands.appendInline("#jobButtonsContent",
+                    "Group { Anchor: (Width: 180, Height: 40, Margin: (Bottom: 5)); " +
+                            "   Group #btn" + index + " { Anchor: (Width: 180, Height: 40); " +
+                            "       Label { Text: \"" + job.getIcon() + " " + job.getName()
+                            + "\"; Style: (FontSize: 14, TextColor: #ffffff, HorizontalAlignment: Center); } " +
+                            "       Background: (Color: " + color + "); " +
                             "   } " +
                             "}");
 
+            // Ensuite bind l'event
             events.addEventBinding(CustomUIEventBindingType.Activating,
-                    "#job-buttons-container > Group:nth-child(" + (index + 1) + ") #btn-" + index,
+                    "#jobButtonsContent > Group:nth-child(" + (index + 1) + ") #btn" + index,
                     EventData.of("SELECT_JOB", job.getId()));
-
-            index++;
         }
 
         // Render Leaderboard (Main content)
         if (selectedJobId != null) {
             Job selectedJob = jobManager.getJob(selectedJobId);
             if (selectedJob != null) {
-                commands.set("#selected-job-title", "Classement - " + selectedJob.getName());
+                commands.set("#selectedJobTitle", "Classement - " + selectedJob.getName());
 
                 List<JobManager.Records.TopPlayerEntry> topPlayers = jobManager.getTopPlayersForJob(selectedJobId, 10);
 
-                int rank = 1;
-                for (JobManager.Records.TopPlayerEntry entry : topPlayers) {
-                    String rowSelector = "#ranking-list-container > Group:nth-child(" + rank + ")";
-                    commands.append("#ranking-list-container", "Pages/JobLeaderboardEntry.ui");
-
-                    commands.set(rowSelector + " #rank", "#" + rank);
-                    commands.set(rowSelector + " #player-name", entry.playerName());
-                    commands.set(rowSelector + " #level", "Niveau " + entry.level());
-                    commands.set(rowSelector + " #xp", entry.totalXP() + " XP");
-
-                    rank++;
-                }
-
                 if (topPlayers.isEmpty()) {
-                    commands.appendInline("#ranking-list-container",
-                            "Label { Text: Aucun joueur classé.; Style: (FontSize: 18; Color: #aaaaaa; Alignment: Center; Margin: (Top: 50)); }");
+                    commands.appendInline("#rankingListContent",
+                            "Label { Text: \"Aucun joueur classé.\"; Style: (FontSize: 18, TextColor: #aaaaaa, HorizontalAlignment: Center); Padding: (Top: 50); }");
+                } else {
+                    for (int rank = 0; rank < topPlayers.size(); rank++) {
+                        JobManager.Records.TopPlayerEntry entry = topPlayers.get(rank);
+
+                        // D'abord append l'entrée
+                        commands.append("#rankingListContent", "Pages/JobLeaderboardEntry.ui");
+
+                        // Ensuite set les valeurs (rank + 1 car nth-child commence à 1)
+                        String rowSelector = "#rankingListContent > Group:nth-child(" + (rank + 1) + ")";
+                        commands.set(rowSelector + " #rank", "#" + (rank + 1));
+                        commands.set(rowSelector + " #playerName", entry.playerName());
+                        commands.set(rowSelector + " #level", "Niveau " + entry.level());
+                        commands.set(rowSelector + " #xp", entry.totalXP() + " XP");
+                    }
                 }
             }
         }

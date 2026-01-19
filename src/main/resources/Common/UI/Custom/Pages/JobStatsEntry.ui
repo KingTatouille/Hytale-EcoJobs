@@ -1,47 +1,58 @@
-Group #stats-entry {
-    LayoutMode: Left;
-    Anchor: (Width: 850, Height: 100);
+$C = "../Common.ui";
+
+Group {
+    LayoutMode: Top;
+    Anchor: (Width: 860, Height: 130);
+    Padding: (Full: 15, Bottom: 25);
+    Background: (Color: #2c2c2c);
     
-    Group #icon-box {
-        Anchor: (Width: 80, Height: 80; Left: 10, Top: 10);
-        Label #job-icon {
-            Text: ❓;
-            Style: (FontSize: 48; Alignment: Center);
+    // En-tête
+    Group #header {
+        LayoutMode: Left;
+        Anchor: (Width: 830, Height: 40);
+        
+        Label #jobIcon {
+            Text: "🌾";
+            Style: (FontSize: 28);
+            Anchor: (Width: 45, Height: 40);
+            Padding: (Right: 10);
+        }
+        
+        Label #jobName {
+            Text: "Fermier";
+            Style: (FontSize: 18, TextColor: #4CAF50, RenderBold: true);
+            Anchor: (Width: 200, Height: 40);
+        }
+        
+        Label #jobLevel {
+            Text: "Niveau 5";
+            Style: (FontSize: 16, TextColor: #ffcc00);
+            Anchor: (Height: 40);
+            Padding: (Left: 20);
         }
     }
     
-    Group #info-box {
+    // Stats
+    Group #statsSection {
         LayoutMode: Top;
-        Anchor: (Width: 300, Height: 80; Left: 100, Top: 10);
+        Anchor: (Width: 830);
+        Padding: (Top: 5);
         
-        Label #job-name {
-            Text: Job Name;
-            Style: (FontSize: 20; Color: #ffffff; FontWeight: Bold);
+        Label #xpText {
+            Text: "XP: 450 / 1000";
+            Style: (FontSize: 13, TextColor: #00ccff);
+            Padding: (Bottom: 3);
         }
         
-        Label #job-level {
-            Text: Niveau 1;
-            Style: (FontSize: 16; Color: #FFD700);
-        }
-    }
-    
-    Group #progress-box {
-        LayoutMode: Top;
-        Anchor: (Width: 400, Height: 80; Left: 420, Top: 10);
-        
-        Label #xp-text {
-            Text: XP: 0 / 1000;
-            Style: (FontSize: 14; Color: #cccccc);
+        Label #percentText {
+            Text: "Progression: 45.0%";
+            Style: (FontSize: 13, TextColor: #aaaaaa);
+            Padding: (Bottom: 3);
         }
         
-         Label #percent-text {
-            Text: Progression: 0%;
-            Style: (FontSize: 14; Color: #4CAF50);
-        }
-        
-         Label #earnings-text {
-            Text: Gains totaux: 0$;
-            Style: (FontSize: 14; Color: #85bb65);
+        Label #earningsText {
+            Text: "Gains totaux: 5000$";
+            Style: (FontSize: 13, TextColor: #4CAF50);
         }
     }
 }

@@ -1,36 +1,51 @@
-Group #jobs-navbar {
+$C = "../Common.ui";
+
+@JobsNavBar = Group {
     LayoutMode: Left;
-    Anchor: (Width: 900, Height: 60; Top: 20; Left: 20);
+    Anchor: (Width: 900, Height: 70, Top: 10);
+    Background: (Color: #2c2c2c);
+    Padding: (Full: 10);
     
-    Group #nav-btn-jobs {
+    Group #navBtnJobs {
         Anchor: (Width: 150, Height: 50);
+        Background: (Color: #4CAF50);
+        Padding: (Right: 10);
+        
         Label {
-            Text: 🛒 Jobs;
-            Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+            Text: "Jobs";
+            Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
         }
     }
     
-    Group #nav-btn-stats {
-        Anchor: (Width: 150, Height: 50; Left: 10);
+    Group #navBtnStats {
+        Anchor: (Width: 150, Height: 50);
+        Background: (Color: #2196F3);
+        Padding: (Right: 10);
+        
         Label {
-            Text: 📊 Mes Stats;
-            Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+            Text: "Statistiques";
+            Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
         }
     }
     
-    Group #nav-btn-leaderboard {
-        Anchor: (Width: 150, Height: 50; Left: 10);
+    Group #navBtnLeaderboard {
+        Anchor: (Width: 150, Height: 50);
+        Background: (Color: #FF9800);
+        Padding: (Right: 10);
+        
         Label {
-            Text: 🏆 Classement;
-            Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+            Text: "Classement";
+            Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
         }
     }
     
-     Group #nav-btn-close {
-        Anchor: (Width: 50, Height: 50; Right: 0);
+    Group #navBtnClose {
+        Anchor: (Width: 100, Height: 50, Right: 10);
+        Background: (Color: #f44336);
+        
         Label {
-            Text: ❌;
-            Style: (FontSize: 24; Color: #ff4444; Alignment: Center);
+            Text: "Fermer";
+            Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
         }
     }
-}
+};

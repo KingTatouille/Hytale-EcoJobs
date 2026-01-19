@@ -1,45 +1,57 @@
-Group #leaderboard-page {
-    LayoutMode: Top;
-    Anchor: (Width: 900, Height: 600);
-    
-    // Header (Navbar space ~80)
-    
-    Group #content {
-        LayoutMode: Left;
-        Anchor: (Width: 900, Height: 460; Top: 80);
+$C = "../Common.ui";
+$Nav = "JobsNavBar.ui";
+
+$C.@PageOverlay {
+    $Nav.@JobsNavBar {}
+
+    $C.@DecoratedContainer {
+        Anchor: (Width: 900, Height: 600);
         
-        // Left Sidebar: Job List
-        Group #job-list-panel {
-            LayoutMode: Top;
-            Anchor: (Width: 200, Height: 440; Left: 20);
+        // Layout principal avec sidebar et contenu
+        Group #mainLayout {
+            LayoutMode: Left;
+            Anchor: (Width: 900, Height: 520, Top: 80);
             
-            Label {
-                Text: Sélectionner Job;
-                Style: (FontSize: 16; Color: #888888; Margin: (Bottom: 10));
+            // Sidebar pour sélection du job
+            Group #sidebar {
+                LayoutMode: TopScrolling;
+                ScrollbarStyle: $C.@DefaultScrollbarStyle;
+                Anchor: (Width: 200, Height: 520, Left: 0);
+                Background: (Color: #1a1a1a);
+                Padding: (Full: 10);
+                
+                Group #jobButtonsContent {
+                    LayoutMode: Top;
+                    Anchor: (Width: 180);
+                }
             }
             
-            Group #job-buttons-container {
+            // Contenu principal (leaderboard)
+            Group #mainContent {
                 LayoutMode: Top;
-                Anchor: (Width: 200, Height: 400);
-                ScrollMode: Vertical;
-            }
-        }
-        
-        // Right Panel: Rankings
-        Group #ranking-panel {
-            LayoutMode: Top;
-            Anchor: (Width: 640, Height: 440; Left: 240);
-            
-            Label #selected-job-title {
-                Text: Classement - Paysan;
-                Style: (FontSize: 24; Color: #FFD700; FontWeight: Bold; Margin: (Bottom: 20));
-            }
-            
-            Group #ranking-list-container {
-                LayoutMode: Top;
-                Anchor: (Width: 640, Height: 380);
-                ScrollMode: Vertical;
+                Anchor: (Width: 700, Height: 520, Left: 200);
+                Padding: (Full: 20);
+                
+                Label #selectedJobTitle {
+                    Text: "Classement - Fermier";
+                    Style: (FontSize: 24, TextColor: #4CAF50, RenderBold: true, HorizontalAlignment: Center);
+                    Anchor: (Width: 660, Height: 40);
+                    Padding: (Bottom: 10);
+                }
+                
+                Group #rankingContainer {
+                    LayoutMode: TopScrolling;
+                    ScrollbarStyle: $C.@DefaultScrollbarStyle;
+                    Anchor: (Width: 660, Height: 460, Top: 10);
+                    
+                    Group #rankingListContent {
+                        LayoutMode: Top;
+                        Anchor: (Width: 660);
+                    }
+                }
             }
         }
     }
 }
+
+$C.@BackButton {}

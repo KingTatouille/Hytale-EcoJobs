@@ -1,80 +1,88 @@
-Group #job-card {
-    LayoutMode: Left;
-    Anchor: (Width: 850, Height: 120);
+$C = "../Common.ui";
+
+Group {
+    LayoutMode: Top;
+    Anchor: (Width: 860, Height: 160);
+    Padding: (Full: 15, Bottom: 25);
+    Background: (Color: #2c2c2c);
     
-    Group #job-icon-container {
-        Anchor: (Width: 80, Height: 80; Left: 15, Top: 20);
+    // En-tête avec icône et nom
+    Group #headerSection {
+        LayoutMode: Left;
+        Anchor: (Width: 830, Height: 40);
         
-        Label #job-icon {
-            Text: ⛏️;
-            Style: (FontSize: 48; Alignment: Center);
+        Label #jobIcon {
+            Text: "🌾";
+            Style: (FontSize: 32);
+            Anchor: (Width: 50, Height: 40);
+            Padding: (Right: 10);
+        }
+        
+        Label #jobName {
+            Text: "Fermier";
+            Style: (FontSize: 20, TextColor: #4CAF50, RenderBold: true);
+            Anchor: (Height: 40);
         }
     }
     
-    Group #job-info {
-        LayoutMode: Top;
-        Anchor: (Width: 400, Height: 100; Left: 110, Top: 10);
+    // Description
+    Label #jobDescription {
+        Text: "Cultivez des plantes et récoltez des ressources.";
+        Style: (FontSize: 14, TextColor: #cccccc);
+        Anchor: (Width: 830, Height: 40);
+        Padding: (Top: 5, Bottom: 5);
+    }
+    
+    // Statistiques
+    Group #statsSection {
+        LayoutMode: Left;
+        Anchor: (Width: 830, Height: 25);
         
-        Label #job-name {
-            Text: Nom du Job;
-            Style: (FontSize: 20; Color: #4CAF50; FontWeight: Bold);
+        Label #baseSalary {
+            Text: "Salaire: 50$/h";
+            Style: (FontSize: 12, TextColor: #ffcc00);
+            Anchor: (Width: 180);
+            Padding: (Right: 15);
         }
         
-        Label #job-description {
-            Text: Description du job;
-            Style: (FontSize: 14; Color: #cccccc);
+        Label #xpPerAction {
+            Text: "XP: +10 par action";
+            Style: (FontSize: 12, TextColor: #00ccff);
+            Anchor: (Width: 180);
+            Padding: (Right: 15);
         }
         
-        Label #required-level {
-            Text: Niveau requis: 0;
-            Style: (FontSize: 12; Color: #FFD700);
-            Visible: false;
+        Label #playerCount {
+            Text: "5 joueur(s)";
+            Style: (FontSize: 12, TextColor: #aaaaaa);
+            Anchor: (Width: 150);
         }
     }
     
-    Group #job-stats {
-        LayoutMode: Top;
-        Anchor: (Width: 180, Height: 100; Left: 530, Top: 10);
+    // Boutons
+    Group #buttonsSection {
+        LayoutMode: Left;
+        Anchor: (Width: 830, Height: 35);
+        Padding: (Top: 10);
         
-        Label #base-salary {
-            Text: Salaire: 100$/h;
-            Style: (FontSize: 13; Color: #ffffff);
-        }
-        
-        Label #xp-per-action {
-            Text: XP: +10 par action;
-            Style: (FontSize: 13; Color: #ffffff);
-        }
-        
-        Label #player-count {
-            Text: 0 joueur(s);
-            Style: (FontSize: 12; Color: #999999);
-        }
-        
-        Label #job-status {
-            Text: ✓ Disponible;
-            Style: (FontSize: 12; Color: #4CAF50; FontWeight: Bold);
-        }
-    }
-    
-    Group #job-actions {
-        LayoutMode: Top;
-        Anchor: (Width: 120, Height: 100; Right: 15, Top: 10);
-        
-        Group #view-details-btn {
-            Anchor: (Width: 110, Height: 35);
+        Group #viewDetailsBtn {
+            Anchor: (Width: 100, Height: 35);
+            Background: (Color: #2196F3);
+            Padding: (Right: 10);
+            
             Label {
-                Text: Détails;
-                Style: (FontSize: 14; Color: #ffffff; Alignment: Center);
+                Text: "Détails";
+                Style: (FontSize: 14, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
             }
         }
         
-        Group #join-btn {
-            Anchor: (Width: 110, Height: 35; Top: 45);
-            Visible: true;
+        Group #joinBtn {
+            Anchor: (Width: 100, Height: 35);
+            Background: (Color: #4CAF50);
+            
             Label {
-                Text: Rejoindre;
-                Style: (FontSize: 14; Color: #ffffff; Alignment: Center);
+                Text: "Rejoindre";
+                Style: (FontSize: 14, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
             }
         }
     }

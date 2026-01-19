@@ -1,73 +1,107 @@
-Group #job-details-page {
-    LayoutMode: Top;
-    Anchor: (Width: 800, Height: 600);
-    
-    Group #header {
-        LayoutMode: Left;
-        Anchor: (Width: 800, Height: 100);
+$C = "../Common.ui";
+
+$C.@PageOverlay {
+    $C.@DecoratedContainer {
+        Anchor: (Width: 600, Height: 500);
         
-        Group #job-icon-container {
-            Anchor: (Width: 80, Height: 80; Left: 20, Top: 10);
-            Label #job-icon {
-                Text: ⛏️;
-                Style: (FontSize: 56; Alignment: Center);
-            }
-        }
-        
-        Group #title-section {
+        Group #content {
             LayoutMode: Top;
-            Anchor: (Width: 500, Height: 80; Left: 120, Top: 10);
+            Anchor: (Width: 560, Left: 20, Top: 20);
             
-            Label #job-name {
-                Text: Nom du Job;
-                Style: (FontSize: 26; Color: #4CAF50; FontWeight: Bold);
+            // En-tête
+            Group #header {
+                LayoutMode: Center;
+                Anchor: (Width: 560, Height: 80);
+                Padding: (Bottom: 20);
+                
+                Label #jobIcon {
+                    Text: "🌾";
+                    Style: (FontSize: 48);
+                }
             }
             
-            Label #job-type {
-                Text: ⛏️ Extraction;
-                Style: (FontSize: 16; Color: #FFD700);
+            Label #jobName {
+                Text: "Fermier";
+                Style: (FontSize: 28, TextColor: #4CAF50, RenderBold: true, HorizontalAlignment: Center);
+                Anchor: (Width: 560, Height: 40);
+                Padding: (Bottom: 10);
             }
-        }
-        
-        Group #close-btn {
-            Anchor: (Width: 40, Height: 40; Right: 10, Top: 10);
-            Label {
-                Text: ×;
-                Style: (FontSize: 32; Color: #ff4444; Alignment: Center);
+            
+            Label #jobDescription {
+                Text: "Cultivez des plantes et récoltez des ressources.";
+                Style: (FontSize: 16, TextColor: #cccccc, HorizontalAlignment: Center);
+                Anchor: (Width: 560, Height: 60);
+                Padding: (Bottom: 20);
             }
-        }
-    }
-    
-    Group #content {
-        LayoutMode: Top;
-        Anchor: (Width: 760, Height: 420; Left: 20, Top: 110);
-        ScrollMode: Vertical;
-        
-        Label #job-description {
-            Text: Description du job;
-            Style: (FontSize: 14; Color: #cccccc);
-        }
-    }
-    
-    Group #bottom-bar {
-        LayoutMode: Center;
-        Anchor: (Width: 800, Height: 70; Bottom: 0);
-        
-        Group #back-btn {
-            Anchor: (Width: 120, Height: 45; Left: 20);
-            Label {
-                Text: ← Retour;
-                Style: (FontSize: 16; Color: #ffffff; Alignment: Center);
+            
+            // Statistiques
+            Group #statsGroup {
+                LayoutMode: Top;
+                Anchor: (Width: 560);
+                Padding: (Full: 20);
+                Background: (Color: #2c2c2c);
+                
+                Label #baseSalary {
+                    Text: "Salaire: 50$";
+                    Style: (FontSize: 14, TextColor: #ffcc00);
+                    Padding: (Bottom: 8);
+                }
+                
+                Label #xpPerAction {
+                    Text: "XP: 10";
+                    Style: (FontSize: 14, TextColor: #00ccff);
+                    Padding: (Bottom: 8);
+                }
+                
+                Label #requiredLevel {
+                    Text: "Niveau requis: 1";
+                    Style: (FontSize: 14, TextColor: #aaaaaa);
+                    Padding: (Bottom: 8);
+                }
+                
+                Label #playerCount {
+                    Text: "5 Joueurs";
+                    Style: (FontSize: 14, TextColor: #4CAF50);
+                }
             }
-        }
-        
-        Group #join-job-btn {
-            Anchor: (Width: 180, Height: 45);
-            Visible: false;
-            Label {
-                Text: Rejoindre;
-                Style: (FontSize: 18; Color: #ffffff; Alignment: Center);
+            
+            // Boutons
+            Group #buttonsSection {
+                LayoutMode: Left;
+                Anchor: (Width: 560, Height: 45, Top: 20);
+                
+                Group #backBtn {
+                    Anchor: (Width: 150, Height: 40, Right: 10);
+                    Background: (Color: #555555);
+                    
+                    Label {
+                        Text: "Retour";
+                        Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+                    }
+                }
+                
+                Group #leaveBtn {
+                    Anchor: (Width: 150, Height: 40, Right: 10);
+                    Background: (Color: #f44336);
+                    
+                    Label {
+                        Text: "Quitter";
+                        Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+                    }
+                }
+                
+                Group #joinJobBtn {
+                    Anchor: (Width: 150, Height: 40);
+                    Background: (Color: #4CAF50);
+                    
+                    Label {
+                        Text: "Rejoindre";
+                        Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
+                    }
+                }
             }
         }
     }
 }
+
+$C.@BackButton {}
