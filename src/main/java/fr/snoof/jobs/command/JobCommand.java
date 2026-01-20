@@ -4,6 +4,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -13,11 +14,12 @@ import fr.snoof.jobs.hook.PermsHook;
 import fr.snoof.jobs.manager.JobManager;
 import fr.snoof.jobs.model.JobPlayer;
 import fr.snoof.jobs.model.JobType;
-import fr.snoof.jobs.ui.JobMainPage;
+import fr.snoof.jobs.ui.JobsMainPage;
 import fr.snoof.jobs.util.MessageUtil;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class JobCommand extends AbstractPlayerCommand {
 
@@ -57,9 +59,9 @@ public class JobCommand extends AbstractPlayerCommand {
 
         switch (subcommand.toLowerCase()) {
             case "admin", "create" -> handleAdmin(ref, store, playerRef);
-            case "gui" -> handleGui(ref, store, playerRef);
-            case "join" -> handleJoin(playerRef, arg1);
-            case "leave" -> handleLeave(playerRef, arg1);
+            case "gui" -> handleGui(playerRef, ref, store, context, world);
+            case "join" -> handleJoin(playerRef, arg1, context, ref, store, world);
+            case "leave" -> handleLeave(playerRef, arg1, context, ref, store, world);
             case "info" -> handleInfo(playerRef);
             case "stats" -> handleStats(playerRef, arg1);
             case "top" -> handleTop(playerRef, arg1);
@@ -95,7 +97,8 @@ public class JobCommand extends AbstractPlayerCommand {
         playerRef.sendMessage(MessageUtil.raw("  §e/job rewards §7- Liste des récompenses"));
     }
 
-    private void handleJoin(PlayerRef playerRef, String jobName) {
+    private void handleJoin(PlayerRef playerRef, String jobName, CommandContext context, Ref<EntityStore> ref,
+            Store<EntityStore> store, World world) {
         if (jobName.isEmpty()) {
             playerRef.sendMessage(MessageUtil.error("Usage: /job join <métier>"));
             return;
@@ -103,12 +106,14 @@ public class JobCommand extends AbstractPlayerCommand {
 
         if (jobManager.assignJob(playerRef, jobName)) {
             playerRef.sendMessage(MessageUtil.success("Job rejoint!"));
+            refreshGuiIfOpen(context, playerRef, ref, store, world);
         } else {
             playerRef.sendMessage(MessageUtil.error("Impossible de rejoindre ce job (déjà rejoint ? ou invalide)."));
         }
     }
 
-    private void handleLeave(PlayerRef playerRef, String jobName) {
+    private void handleLeave(PlayerRef playerRef, String jobName, CommandContext context, Ref<EntityStore> ref,
+            Store<EntityStore> store, World world) {
         if (jobName.isEmpty()) {
             playerRef.sendMessage(MessageUtil.error("Usage: /job leave <métier>"));
             return;
@@ -116,8 +121,19 @@ public class JobCommand extends AbstractPlayerCommand {
 
         if (jobManager.removeJob(playerRef, jobName)) {
             playerRef.sendMessage(MessageUtil.info("Job quitté."));
+            refreshGuiIfOpen(context, playerRef, ref, store, world);
         } else {
             playerRef.sendMessage(MessageUtil.error("Impossible de quitter ce job (non rejoint ? ou invalide)."));
+        }
+    }
+
+    private void refreshGuiIfOpen(CommandContext context, PlayerRef playerRef, Ref<EntityStore> ref,
+            Store<EntityStore> store, World world) {
+        Player player = context.senderAs(Player.class);
+        if (player != null && player.getPageManager().getCustomPage() instanceof JobsMainPage) {
+            CompletableFuture.runAsync(() -> {
+                ((JobsMainPage) player.getPageManager().getCustomPage()).sendUpdate();
+            }, world);
         }
     }
 
@@ -177,7 +193,14 @@ public class JobCommand extends AbstractPlayerCommand {
         }
     }
 
-    private void handleGui(Ref<EntityStore> ref, Store<EntityStore> store, PlayerRef playerRef) {
-        new JobMainPage(ref, store, playerRef, jobManager).open();
+    private void handleGui(PlayerRef playerRef, Ref<EntityStore> ref, Store<EntityStore> store, CommandContext context,
+            World world) {
+        Player player = context.senderAs(Player.class);
+        player.getWorldMapTracker().tick(0);
+
+        CompletableFuture.runAsync(() -> {
+            player.getPageManager().openCustomPage(ref, store, new JobsMainPage(playerRef, jobManager));
+        }, world);
+
     }
 }

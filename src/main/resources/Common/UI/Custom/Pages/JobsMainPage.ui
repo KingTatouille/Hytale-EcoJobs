@@ -1,67 +1,180 @@
 $C = "../Common.ui";
-$Nav = "JobsNavBar.ui";
 
-$C.@PageOverlay {
-    $Nav.@JobsNavBar {}
+@LevelLabel = Label {
+  Style: (FontSize: 16, Alignment: Center, TextColor: #a0a0a0);
+  Anchor: (Height: 20);
+  Visible: false;
+};
 
-    $C.@DecoratedContainer {
-        Anchor: (Width: 900, Height: 600);
+$C.@DecoratedContainer {
+  Anchor: (Width: 900, Height: 600);
+
+  // Override CloseButton visibility
+  Button #CloseButton {
+    Visible: true;
+  }
+
+  // Add Title
+  $C.@Title {
+    Text: "Métiers";
+    Anchor: (Top: 12, Height: 30, Left: 50, Right: 50);
+  }
+
+  Group #Content {
+    LayoutMode: Top;
+    Anchor: (Full: 0, Top: 50);
+    Padding: (Full: 20);
+    
+    // Row 1
+    Group {
+      LayoutMode: Left;
+      Anchor: (Height: 220); 
+
+      // FARMER
+      Group {
+        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
+        Anchor: (Width: 260, Height: 200);
+        LayoutMode: Top;
+        Padding: (Full: 15);
+
+        Label { Text: "🌾"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
+        Label { Text: "Fermier"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
         
-        // Header
-        Group #contentHeader {
-            LayoutMode: Center;
-            Anchor: (Width: 900, Height: 60, Top: 80);
-            
-            Label #pageTitle {
-                Text: "Jobs Disponibles";
-                Style: (FontSize: 24, TextColor: #4CAF50, RenderBold: true);
-            }
+        @LevelLabel #lvlFARMER { Text: ""; }
+
+        Group { Anchor: (Height: 20); }
+
+        Group {
+          LayoutMode: Center;
+          Anchor: (Width: 230, Height: 44);
+          $C.@TextButton #btnJoinFARMER { Text: "Rejoindre"; Anchor: (Full: 0); Visible: true; }
+          $C.@CancelTextButton #btnLeaveFARMER { Text: "Quitter"; Anchor: (Full: 0); Visible: false; }
         }
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      // HUNTER
+      Group {
+        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
+        Anchor: (Width: 260, Height: 200);
+        LayoutMode: Top;
+        Padding: (Full: 15);
+
+        Label { Text: "🏹"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
+        Label { Text: "Chasseur"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
         
-        // Container with scrolling
-        Group #jobsContainer {
-            LayoutMode: TopScrolling;
-            ScrollbarStyle: $C.@DefaultScrollbarStyle;
-            Anchor: (Width: 860, Height: 400, Left: 20, Top: 140);
-            
-            Group #jobsContent {
-                LayoutMode: Top;
-                Anchor: (Width: 860);
-            }
+        @LevelLabel #lvlHUNTER { Text: ""; }
+
+        Group { Anchor: (Height: 20); }
+
+        Group {
+          LayoutMode: Center;
+          Anchor: (Width: 230, Height: 44);
+          $C.@TextButton #btnJoinHUNTER { Text: "Rejoindre"; Anchor: (Full: 0); Visible: true; }
+          $C.@CancelTextButton #btnLeaveHUNTER { Text: "Quitter"; Anchor: (Full: 0); Visible: false; }
         }
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      // CHAMPION
+      Group {
+        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
+        Anchor: (Width: 260, Height: 200);
+        LayoutMode: Top;
+        Padding: (Full: 15);
+
+        Label { Text: "⚔️"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
+        Label { Text: "Guerrier"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
         
-        // Pagination
-        Group #paginationBar {
-            LayoutMode: Center;
-            Anchor: (Width: 900, Height: 60, Bottom: 0);
-            
-            Group #paginationButtons {
-                LayoutMode: Left;
-                Anchor: (Width: 300, Height: 40);
-                
-                Group #prevPageBtn {
-                    Anchor: (Width: 140, Height: 40);
-                    Background: (Color: #555555);
-                    Padding: (Right: 20);
-                    
-                    Label {
-                        Text: "◀ Précédent";
-                        Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
-                    }
-                }
-                
-                Group #nextPageBtn {
-                    Anchor: (Width: 140, Height: 40);
-                    Background: (Color: #555555);
-                    
-                    Label {
-                        Text: "Suivant ▶";
-                        Style: (FontSize: 16, TextColor: #ffffff, HorizontalAlignment: Center, VerticalAlignment: Center);
-                    }
-                }
-            }
+        @LevelLabel #lvlCHAMPION { Text: ""; }
+
+        Group { Anchor: (Height: 20); }
+
+        Group {
+          LayoutMode: Center;
+          Anchor: (Width: 230, Height: 44);
+          $C.@TextButton #btnJoinCHAMPION { Text: "Rejoindre"; Anchor: (Full: 0); Visible: true; }
+          $C.@CancelTextButton #btnLeaveCHAMPION { Text: "Quitter"; Anchor: (Full: 0); Visible: false; }
         }
+      }
     }
-}
 
-$C.@BackButton {}
+    // Row 2
+    Group {
+      LayoutMode: Left;
+      Anchor: (Height: 220); 
+
+      // MINER
+      Group {
+        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
+        Anchor: (Width: 260, Height: 200);
+        LayoutMode: Top;
+        Padding: (Full: 15);
+
+        Label { Text: "⛏️"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
+        Label { Text: "Mineur"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        
+        @LevelLabel #lvlMINER { Text: ""; }
+
+        Group { Anchor: (Height: 20); }
+
+        Group {
+          LayoutMode: Center;
+          Anchor: (Width: 230, Height: 44);
+          $C.@TextButton #btnJoinMINER { Text: "Rejoindre"; Anchor: (Full: 0); Visible: true; }
+          $C.@CancelTextButton #btnLeaveMINER { Text: "Quitter"; Anchor: (Full: 0); Visible: false; }
+        }
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      // BLACKSMITH
+      Group {
+        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
+        Anchor: (Width: 260, Height: 200);
+        LayoutMode: Top;
+        Padding: (Full: 15);
+
+        Label { Text: "🔨"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
+        Label { Text: "Forgeron"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        
+        @LevelLabel #lvlBLACKSMITH { Text: ""; }
+
+        Group { Anchor: (Height: 20); }
+
+        Group {
+          LayoutMode: Center;
+          Anchor: (Width: 230, Height: 44);
+          $C.@TextButton #btnJoinBLACKSMITH { Text: "Rejoindre"; Anchor: (Full: 0); Visible: true; }
+          $C.@CancelTextButton #btnLeaveBLACKSMITH { Text: "Quitter"; Anchor: (Full: 0); Visible: false; }
+        }
+      }
+
+      Group { Anchor: (Width: 20); }
+
+      // LUMBERJACK
+      Group {
+        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
+        Anchor: (Width: 260, Height: 200);
+        LayoutMode: Top;
+        Padding: (Full: 15);
+
+        Label { Text: "🪓"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
+        Label { Text: "Bûcheron"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        
+        @LevelLabel #lvlLUMBERJACK { Text: ""; }
+
+        Group { Anchor: (Height: 20); }
+
+        Group {
+          LayoutMode: Center;
+          Anchor: (Width: 230, Height: 44);
+          $C.@TextButton #btnJoinLUMBERJACK { Text: "Rejoindre"; Anchor: (Full: 0); Visible: true; }
+          $C.@CancelTextButton #btnLeaveLUMBERJACK { Text: "Quitter"; Anchor: (Full: 0); Visible: false; }
+        }
+      }
+    }
+  }
+}
