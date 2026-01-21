@@ -1,9 +1,6 @@
 package fr.snoof.jobs.manager;
 
-import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import fr.snoof.jobs.config.ConfigManager;
 import fr.snoof.jobs.hook.EconomyHook;
 import fr.snoof.jobs.model.Job;
@@ -156,8 +153,8 @@ public class JobManager {
         if (reward == null)
             return;
 
-        JobPlayer player = getOrCreatePlayer(uuid, playerName);
-        if (!player.hasJoinedJob(type)) {
+        JobPlayer jobPlayer = getOrCreatePlayer(uuid, playerName);
+        if (!jobPlayer.hasJoinedJob(type)) {
             return;
         }
 
@@ -165,25 +162,25 @@ public class JobManager {
 
         if (reward.getMoney() > 0) {
             EconomyHook.addBalance(uuid, reward.getMoney());
-            player.getJobData(type).addEarnings((long) reward.getMoney()); // Fixed cast
+            jobPlayer.getJobData(type).addEarnings((long) reward.getMoney());
         }
 
-        if (configManager.getConfig().showRewardMessages && playerRef != null && !leveledUp) {
+        if (playerRef != null && !leveledUp) {
+            StringBuilder message = new StringBuilder();
             if (reward.getXp() > 0) {
-                playerRef.sendMessage(MessageUtil.raw(
-                        String.format(configManager.getMessages().xpGained, reward.getXp(), type.getDisplayName()),
-                        "#7f8c8d"));
+                message.append("+").append(reward.getXp()).append(" XP");
             }
             if (reward.getMoney() > 0) {
-                playerRef.sendMessage(MessageUtil.raw(
-                        String.format(configManager.getMessages().moneyGained,
-                                EconomyHook.formatAmount(reward.getMoney())),
-                        SUCCESS_COLOR));
+                if (message.length() > 0)
+                    message.append(" | ");
+                message.append("+").append(EconomyHook.formatAmount(reward.getMoney()));
+            }
+
+            if (message.length() > 0) {
+                message.append(" (").append(type.getDisplayName()).append(")");
             }
         }
     }
-
-    private static final String SUCCESS_COLOR = "#2ecc71";
 
     private boolean checkLevelUp(JobPlayer player, JobType type, PlayerRef playerRef) {
         JobData data = player.getJobData(type);
@@ -275,10 +272,6 @@ public class JobManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private String getPlayerName(PlayerRef playerRef) {
-        return playerRef.getUsername();
     }
 
     public static class Records {

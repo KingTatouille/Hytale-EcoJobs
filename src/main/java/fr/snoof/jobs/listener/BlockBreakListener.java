@@ -13,6 +13,7 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import fr.snoof.jobs.config.ConfigManager;
 import fr.snoof.jobs.manager.JobManager;
+import fr.snoof.jobs.manager.PlacedBlockManager;
 import fr.snoof.jobs.model.JobReward;
 import fr.snoof.jobs.model.JobType;
 
@@ -23,11 +24,14 @@ public class BlockBreakListener extends EntityEventSystem<EntityStore, BreakBloc
 
     private final JobManager jobManager;
     private final ConfigManager configManager;
+    private final PlacedBlockManager placedBlockManager;
 
-    public BlockBreakListener(JobManager jobManager, ConfigManager configManager) {
+    public BlockBreakListener(JobManager jobManager, ConfigManager configManager,
+            PlacedBlockManager placedBlockManager) {
         super(BreakBlockEvent.class);
         this.jobManager = jobManager;
         this.configManager = configManager;
+        this.placedBlockManager = placedBlockManager;
     }
 
     @Override
@@ -45,11 +49,31 @@ public class BlockBreakListener extends EntityEventSystem<EntityStore, BreakBloc
             return;
 
         String blockId = event.getBlockType().getId();
-        if (blockId == null || blockId.isEmpty())
+        // Fallback: If event says "Empty" or null, try to retrieve from
+        // PlacedBlockManager
+        int x = event.getTargetBlock().getX();
+        int y = event.getTargetBlock().getY();
+        int z = event.getTargetBlock().getZ();
+
+        UUID placerUuid = placedBlockManager.getPlacer(x, y, z);
+        String placedBlockId = placedBlockManager.getPlacedBlockId(x, y, z);
+
+        if ((blockId == null || blockId.equals("Empty") || blockId.isEmpty()) && placedBlockId != null) {
+            blockId = placedBlockId;
+        }
+
+        if (blockId == null || blockId.isEmpty() || blockId.equals("Empty")) {
+            if (placerUuid != null)
+                placedBlockManager.removeBlock(x, y, z);
             return;
+        }
 
         String normalizedBlockId = normalizeId(blockId);
         String playerName = playerRef.getUsername();
+
+        if (placerUuid != null) {
+            placedBlockManager.removeBlock(x, y, z);
+        }
 
         JobReward minerReward = configManager.getBlockReward(normalizedBlockId);
         if (minerReward != null) {
@@ -65,7 +89,10 @@ public class BlockBreakListener extends EntityEventSystem<EntityStore, BreakBloc
 
         JobReward cropReward = configManager.getCropReward(normalizedBlockId);
         if (cropReward != null) {
-            jobManager.giveReward(playerUuid, playerName, JobType.FARMER, cropReward, playerRef);
+            // Only reward if placed by the player (cultivated)
+            if (placerUuid != null && placerUuid.equals(playerUuid)) {
+                jobManager.giveReward(playerUuid, playerName, JobType.FARMER, cropReward, playerRef);
+            }
         }
     }
 

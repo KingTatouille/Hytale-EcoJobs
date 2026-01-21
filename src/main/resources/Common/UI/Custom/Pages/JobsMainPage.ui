@@ -7,7 +7,7 @@ $C = "../Common.ui";
 };
 
 $C.@DecoratedContainer {
-  Anchor: (Width: 900, Height: 600);
+  Anchor: (Width: 1200, Height: 800);
 
   // Override CloseButton visibility
   Button #CloseButton {
@@ -17,28 +17,37 @@ $C.@DecoratedContainer {
   // Add Title
   $C.@Title {
     Text: "Métiers";
-    Anchor: (Top: 12, Height: 30, Left: 50, Right: 50);
+    Anchor: (Top: 10, Height: 30, Left: 50, Right: 50);
   }
 
   Group #Content {
     LayoutMode: Top;
     Anchor: (Full: 0, Top: 50);
-    Padding: (Full: 20);
+    Padding: (Top: 20, Bottom: 20, Left: 40, Right: 40);
     
     // Row 1
     Group {
-      LayoutMode: Left;
-      Anchor: (Height: 220); 
+      LayoutMode: Center;
+      Anchor: (Height: 300);
 
       // FARMER
       Group {
-        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
-        Anchor: (Width: 260, Height: 200);
+        Background: $C.@InputBoxBackground;
+        Anchor: (Width: 300, Height: 240);
         LayoutMode: Top;
         Padding: (Full: 15);
 
-        Label { Text: "🌾"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
-        Label { Text: "Fermier"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        Group {
+          Background: #303030;
+          Anchor: (Width: 70, Height: 70, Top: 5);
+          LayoutMode: Center;
+
+          Group {
+            Background: (TexturePath: "../WeaponsCrude.png");
+            Anchor: (Width: 70, Height: 70);
+          }
+        }
+        Label { Text: "Fermier"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); Padding: (Top: 10); }
         
         @LevelLabel #lvlFARMER { Text: ""; }
 
@@ -56,13 +65,22 @@ $C.@DecoratedContainer {
 
       // HUNTER
       Group {
-        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
-        Anchor: (Width: 260, Height: 200);
+        Background: $C.@InputBoxBackground;
+        Anchor: (Width: 300, Height: 240);
         LayoutMode: Top;
         Padding: (Full: 15);
 
-        Label { Text: "🏹"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
-        Label { Text: "Chasseur"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        Group {
+          Background: #303030;
+          Anchor: (Width: 70, Height: 70, Top: 5);
+          LayoutMode: Center;
+
+          Group {
+            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/WeaponsRanged.png");
+            Anchor: (Width: 50, Height: 50);
+          }
+        }
+        Label { Text: "Chasseur"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); Padding: (Top: 10); }
         
         @LevelLabel #lvlHUNTER { Text: ""; }
 
@@ -80,13 +98,22 @@ $C.@DecoratedContainer {
 
       // CHAMPION
       Group {
-        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
-        Anchor: (Width: 260, Height: 200);
+        Background: $C.@InputBoxBackground;
+        Anchor: (Width: 300, Height: 240);
         LayoutMode: Top;
         Padding: (Full: 15);
 
-        Label { Text: "⚔️"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
-        Label { Text: "Guerrier"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        Group {
+          Background: #303030;
+          Anchor: (Width: 70, Height: 70, Top: 5);
+          LayoutMode: Center;
+
+          Group {
+            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/WeaponsCrude.png");
+            Anchor: (Width: 50, Height: 50);
+          }
+        }
+        Label { Text: "Guerrier"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); Padding: (Top: 10); }
         
         @LevelLabel #lvlCHAMPION { Text: ""; }
 
@@ -103,18 +130,27 @@ $C.@DecoratedContainer {
 
     // Row 2
     Group {
-      LayoutMode: Left;
-      Anchor: (Height: 220); 
+      LayoutMode: Center;
+      Anchor: (Height: 300); 
 
       // MINER
       Group {
-        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
-        Anchor: (Width: 260, Height: 200);
+        Background: $C.@InputBoxBackground;
+        Anchor: (Width: 300, Height: 240);
         LayoutMode: Top;
         Padding: (Full: 15);
 
-        Label { Text: "⛏️"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
-        Label { Text: "Mineur"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        Group {
+          Background: #303030;
+          Anchor: (Width: 70, Height: 70, Top: 5);
+          LayoutMode: Center;
+
+          Group {
+            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/Resources.png");
+            Anchor: (Width: 50, Height: 50);
+          }
+        }
+        Label { Text: "Mineur"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); Padding: (Top: 10); }
         
         @LevelLabel #lvlMINER { Text: ""; }
 
@@ -132,13 +168,22 @@ $C.@DecoratedContainer {
 
       // BLACKSMITH
       Group {
-        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
-        Anchor: (Width: 260, Height: 200);
+        Background: $C.@InputBoxBackground;
+        Anchor: (Width: 300, Height: 240);
         LayoutMode: Top;
         Padding: (Full: 15);
 
-        Label { Text: "🔨"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
-        Label { Text: "Forgeron"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        Group {
+          Background: #303030;
+          Anchor: (Width: 70, Height: 70, Top: 5);
+          LayoutMode: Center;
+
+          Group {
+            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/ArmourMetal.png");
+            Anchor: (Width: 50, Height: 50);
+          }
+        }
+        Label { Text: "Forgeron"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); Padding: (Top: 10); }
         
         @LevelLabel #lvlBLACKSMITH { Text: ""; }
 
@@ -156,13 +201,22 @@ $C.@DecoratedContainer {
 
       // LUMBERJACK
       Group {
-        Background: (TexturePath: "Common/ContainerPatch.png", Border: 12);
-        Anchor: (Width: 260, Height: 200);
+        Background: $C.@InputBoxBackground;
+        Anchor: (Width: 300, Height: 240);
         LayoutMode: Top;
         Padding: (Full: 15);
 
-        Label { Text: "🪓"; Style: (FontSize: 48, Alignment: Center); Anchor: (Height: 60); }
-        Label { Text: "Bûcheron"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); }
+        Group {
+          Background: #303030;
+          Anchor: (Width: 70, Height: 70, Top: 5);
+          LayoutMode: Center;
+
+          Group {
+            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/Tools.png");
+            Anchor: (Width: 50, Height: 50);
+          }
+        }
+        Label { Text: "Bûcheron"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); Padding: (Top: 10); }
         
         @LevelLabel #lvlLUMBERJACK { Text: ""; }
 
@@ -175,6 +229,14 @@ $C.@DecoratedContainer {
           $C.@CancelTextButton #btnLeaveLUMBERJACK { Text: "Quitter"; Anchor: (Full: 0); Visible: false; }
         }
       }
+    }
+
+    Group { Anchor: (Height: 18); }
+
+    Group {
+      LayoutMode: Center;
+      Anchor: (Height: 44);
+      $C.@TextButton #BtnClose { Text: "Fermer"; Anchor: (Width: 200, Height: 44); }
     }
   }
 }

@@ -56,29 +56,169 @@
         }
     },
     "cropRewards": {
-        "wheat": {
+        "plant_crop_wheat_item": {
             "xp": 5,
             "money": 0.3
         },
-        "carrot": {
+        "plant_crop_carrot_item": {
             "xp": 5,
             "money": 0.3
         },
-        "potato": {
+        "plant_crop_potato_item": {
             "xp": 5,
             "money": 0.3
         },
-        "beetroot": {
+        "plant_crop_beetroot_item": {
             "xp": 6,
             "money": 0.4
         },
-        "melon": {
+        "plant_crop_melon_item": {
             "xp": 8,
             "money": 0.5
         },
-        "pumpkin": {
+        "plant_crop_pumpkin_item": {
             "xp": 8,
             "money": 0.5
+        },
+        "ingredient_life_essence": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "plant_seeds_aubergine_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_carrot_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_cauliflower_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_chilli_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_corn_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_cotton_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_lettuce_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_onion_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_potato_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_pumpkin_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_rice_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_tomato_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_turnip_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_seeds_wheat_eternal": {
+            "xp": 5,
+            "money": 0.3
+        },
+        "plant_crop_health1_block": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "plant_crop_health3_block": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "plant_crop_mana1_block": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "plant_crop_mana3_block": {
+            "xp": 10,
+            "money": 1.0
+        },
+        "plant_lavender_stage_0": {
+            "xp": 5,
+            "money": 0.5
+        },
+        "plant_seeds_wild": {
+            "xp": 2,
+            "money": 0.1
+        },
+        "plant_sunflower_stage_0": {
+            "xp": 5,
+            "money": 0.5
+        },
+        "plant_seeds_health1": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_health2": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_health3": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_mana1": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_mana2": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_mana3": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_stamina1": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_stamina2": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_stamina3": {
+            "xp": 8,
+            "money": 0.8
+        },
+        "plant_seeds_mushroom": {
+            "xp": 5,
+            "money": 0.5
+        },
+        "plant_seeds_oak": {
+            "xp": 2,
+            "money": 0.2
+        },
+        "plant_seeds_pine": {
+            "xp": 2,
+            "money": 0.2
+        },
+        "plant_seeds_test_tree": {
+            "xp": 1,
+            "money": 0.1
         }
     },
     "mobRewards": {

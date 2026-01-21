@@ -14,6 +14,7 @@ import fr.snoof.jobs.hook.PermsHook;
 import fr.snoof.jobs.manager.JobManager;
 import fr.snoof.jobs.model.JobPlayer;
 import fr.snoof.jobs.model.JobType;
+import fr.snoof.jobs.ui.JobInfoPage;
 import fr.snoof.jobs.ui.JobsMainPage;
 import fr.snoof.jobs.util.MessageUtil;
 
@@ -62,7 +63,7 @@ public class JobCommand extends AbstractPlayerCommand {
             case "gui" -> handleGui(playerRef, ref, store, context, world);
             case "join" -> handleJoin(playerRef, arg1, context, ref, store, world);
             case "leave" -> handleLeave(playerRef, arg1, context, ref, store, world);
-            case "info" -> handleInfo(playerRef);
+            case "info" -> handleInfo(playerRef, arg1, ref, store, world);
             case "stats" -> handleStats(playerRef, arg1);
             case "top" -> handleTop(playerRef, arg1);
             case "rewards" -> handleRewards(playerRef);
@@ -137,21 +138,46 @@ public class JobCommand extends AbstractPlayerCommand {
         }
     }
 
-    private void handleInfo(PlayerRef playerRef) {
+    private void handleInfo(PlayerRef playerRef, String jobName, Ref<EntityStore> ref, Store<EntityStore> store,
+            World world) {
         UUID uuid = playerRef.getUuid();
         JobPlayer player = jobManager.getOrCreatePlayer(uuid, playerRef.getUsername());
 
-        playerRef.sendMessage(MessageUtil.info(configManager.getMessages().jobInfo));
+        JobType targetType = null;
 
-        for (JobType type : JobType.values()) {
-            int level = player.getLevel(type);
-            long xp = player.getExperience(type);
-            long required = jobManager.getXpRequired(level);
+        // If argument provided, try to find that specific job
+        if (!jobName.isEmpty()) {
+            targetType = JobType.fromString(jobName);
+            if (targetType == null) {
+                playerRef.sendMessage(MessageUtil.error("Job introuvable: " + jobName));
+                return;
+            }
+            if (!player.hasJoinedJob(targetType)) {
+                playerRef.sendMessage(
+                        MessageUtil.error("Vous n'exercez pas le métier de " + targetType.getDisplayName()));
+                return;
+            }
+        } else {
+            // No argument, find the first joined job
+            for (JobType type : JobType.values()) {
+                if (player.hasJoinedJob(type)) {
+                    targetType = type;
+                    break;
+                }
+            }
 
-            String entry = String.format(configManager.getMessages().jobEntry,
-                    type.getDisplayName(), level, xp, required);
-            playerRef.sendMessage(MessageUtil.raw(entry, type.getColor()));
+            if (targetType == null) {
+                playerRef.sendMessage(MessageUtil.error("Vous n'avez aucun métier actif."));
+                return;
+            }
         }
+
+        // Open the GUI for the target job
+        final JobType finalType = targetType;
+        CompletableFuture.runAsync(() -> {
+            Player ethPlayer = store.getComponent(ref, Player.getComponentType());
+            ethPlayer.getPageManager().openCustomPage(ref, store, new JobInfoPage(playerRef, jobManager, finalType));
+        }, world);
     }
 
     private void handleStats(PlayerRef playerRef, String jobName) {

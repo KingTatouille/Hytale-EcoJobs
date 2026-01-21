@@ -1,0 +1,82 @@
+$C = "../Common.ui";
+
+$C.@DecoratedContainer {
+  Anchor: (Width: 400, Height: 350);
+
+  // Override CloseButton visibility
+  Button #CloseButton {
+    Visible: true;
+  }
+
+  // Title
+  $C.@Title #PageTitle {
+    Text: "Détails du métier";
+    Anchor: (Top: 12, Height: 30, Left: 20, Right: 20);
+  }
+
+  Group #Content {
+    LayoutMode: Top;
+    Anchor: (Full: 0, Top: 50);
+    Padding: (Full: 20);
+
+    // Job Icon (Centered)
+    Group {
+      Background: $C.@InputBoxBackground;
+      Anchor: (Width: 80, Height: 80, Top: 10);
+      LayoutMode: Center;
+      
+      Group #JobIcon {
+        Anchor: (Full: 10);
+      }
+    }
+
+    // Job Name
+    Label #JobNameLabel {
+        Text: "JOB NAME";
+        Style: (FontSize: 24, Alignment: Center, RenderBold: true, TextColor: #ebdcb0);
+        Anchor: (Height: 40, Top: 10);
+    }
+
+    // Level
+    Label #LevelLabel {
+        Text: "Niveau X";
+        Style: (FontSize: 18, Alignment: Center, TextColor: #ffffff);
+        Anchor: (Height: 30);
+    }
+
+    // XP Text
+    Label #XpLabel {
+        Text: "XP: 0 / 100";
+        Style: (FontSize: 16, Alignment: Center, TextColor: #a0a0a0);
+        Anchor: (Height: 20);
+    }
+
+    // Progress Bar Container
+    Group {
+        Background: #303030;
+        Anchor: (Width: 300, Height: 20, Top: 10);
+
+        
+        // Progress Bar Fill
+        Group #ProgressBarFill {
+            Background: #e6c65e;
+            Anchor: (Height: 20, Width: 0, Left: 0, Top: 0); 
+        }
+    }
+    
+    // Percent Label
+    Label #PercentLabel {
+        Text: "0%";
+        Style: (FontSize: 14, Alignment: Center, TextColor: #808080);
+        Anchor: (Height: 20, Top: 5);
+    }
+    
+    Group { Anchor: (Height: 18); }
+
+    Group {
+      LayoutMode: Center;
+      Anchor: (Width: 320, Height: 44);
+      $C.@TextButton #BtnClose { Text: "Fermer"; Anchor: (Full: 0); }
+    }
+  }
+}

@@ -4,11 +4,11 @@ import fr.snoof.jobs.config.ConfigManager;
 
 public enum JobType {
     FARMER("Fermier", "Producteur agricole", "#2ecc71"),
-    HUNTER("Chasseur Cueilleur", "Chasse et collecte", "#e67e22"),
-    CHAMPION("Champion Militaire", "Combat PvP/PvE", "#e74c3c"),
-    MINER("Mineur Tailleur", "Extraction minière", "#95a5a6"),
-    BLACKSMITH("Forgeron Ingénieur", "Craft technique", "#f39c12"),
-    LUMBERJACK("Bucheron Ébéniste", "Travail du bois", "#27ae60");
+    HUNTER("Chasseur", "Chasse et collecte", "#e67e22"),
+    CHAMPION("Champion", "Combat PvP/PvE", "#e74c3c"),
+    MINER("Mineur", "Extraction minière", "#95a5a6"),
+    BLACKSMITH("Forgeron", "Craft technique", "#f39c12"),
+    LUMBERJACK("Bûcheron", "Travail du bois", "#27ae60");
 
     private final String displayName;
     private final String description;

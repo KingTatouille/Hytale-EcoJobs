@@ -41,6 +41,12 @@ public class JobsMainPage extends InteractiveCustomUIPage<JobsMainPage.JobsGuiDa
         // Bind Close Button if needed, or rely on CanDismiss.
         // For now, we won't bind Close explicitly as CanDismiss handles ESC.
         // If the UI button is needed, we usually bind it to a close action.
+        eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#BtnClose",
+                EventData.of("Button", "Close"));
+        eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#CloseButton",
+                EventData.of("Button", "Close"));
+
+        System.out.println("DEBUG: JobsMainPage build() called for " + playerRef.getUsername());
 
         JobPlayer player = jobManager.getOrCreatePlayer(playerRef.getUuid(), playerRef.getUsername());
 
@@ -80,6 +86,11 @@ public class JobsMainPage extends InteractiveCustomUIPage<JobsMainPage.JobsGuiDa
         if (data.button != null) {
             String[] parts = data.button.split(":");
             String action = parts[0];
+
+            if (action.equals("Close")) {
+                this.close();
+                return;
+            }
 
             if (parts.length > 1) {
                 String jobName = parts[1];

@@ -117,6 +117,23 @@ public class ConfigManager {
         cfg.cropRewards.put("melon", new JobReward(8, 0.5));
         cfg.cropRewards.put("pumpkin", new JobReward(8, 0.5));
 
+        // Additional crops
+        cfg.cropRewards.put("tomato", new JobReward(5, 0.3));
+        cfg.cropRewards.put("corn", new JobReward(5, 0.3));
+        cfg.cropRewards.put("cabbage", new JobReward(5, 0.3));
+        cfg.cropRewards.put("cotton", new JobReward(5, 0.3));
+        cfg.cropRewards.put("berry_bush", new JobReward(3, 0.2));
+
+        // Variants with _crop suffix just in case
+        cfg.cropRewards.put("wheat_crop", new JobReward(5, 0.3));
+        cfg.cropRewards.put("carrot_crop", new JobReward(5, 0.3));
+        cfg.cropRewards.put("potato_crop", new JobReward(5, 0.3));
+        cfg.cropRewards.put("beetroot_crop", new JobReward(6, 0.4));
+        cfg.cropRewards.put("tomato_crop", new JobReward(5, 0.3));
+        cfg.cropRewards.put("corn_crop", new JobReward(5, 0.3));
+        cfg.cropRewards.put("cabbage_crop", new JobReward(5, 0.3));
+        cfg.cropRewards.put("cotton_crop", new JobReward(5, 0.3));
+
         // Mob rewards (HUNTER)
         cfg.mobRewards = new HashMap<>();
         cfg.mobRewards.put("pig", new JobReward(10, 1.0));
