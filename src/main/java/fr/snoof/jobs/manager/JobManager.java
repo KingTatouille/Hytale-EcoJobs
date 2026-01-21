@@ -2,6 +2,10 @@ package fr.snoof.jobs.manager;
 
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import fr.snoof.jobs.config.ConfigManager;
+import com.hypixel.hytale.server.core.util.NotificationUtil;
+import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.inventory.ItemStack;
+import com.hypixel.hytale.protocol.ItemWithAllMetadata;
 import fr.snoof.jobs.hook.EconomyHook;
 import fr.snoof.jobs.model.Job;
 import fr.snoof.jobs.model.JobData;
@@ -177,8 +181,26 @@ public class JobManager {
             }
 
             if (message.length() > 0) {
-                message.append(" (").append(type.getDisplayName()).append(")");
+                sendNotification(playerRef, type.getDisplayName(), message.toString(), type.getIconItem());
             }
+        }
+    }
+
+    public void sendNotification(PlayerRef playerRef, String title, String message, String iconItemName) {
+        try {
+            var packetHandler = playerRef.getPacketHandler();
+            var primaryMessage = Message.raw(title).color("#2ecc71"); // Green title
+            var secondaryMessage = Message.raw(message).color("#FFFFFF");
+
+            var icon = new ItemStack(iconItemName != null ? iconItemName : "Weapon_Sword_Wood", 1).toPacket();
+
+            NotificationUtil.sendNotification(
+                    packetHandler,
+                    primaryMessage,
+                    secondaryMessage,
+                    (ItemWithAllMetadata) icon);
+        } catch (Exception e) {
+            System.err.println("[EcoJobs] Failed to send notification: " + e.getMessage());
         }
     }
 

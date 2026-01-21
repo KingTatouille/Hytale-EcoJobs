@@ -43,8 +43,8 @@ $C.@DecoratedContainer {
           LayoutMode: Center;
 
           Group {
-            Background: (TexturePath: "../WeaponsCrude.png");
-            Anchor: (Width: 70, Height: 70);
+            Background: (TexturePath: "../Tool_Hoe_Iron.png");
+            Anchor: (Width: 50, Height: 50);
           }
         }
         Label { Text: "Fermier"; Style: (FontSize: 22, Alignment: Center, RenderBold: true, TextColor: #ebdcb0); Anchor: (Height: 30); Padding: (Top: 10); }
@@ -76,7 +76,7 @@ $C.@DecoratedContainer {
           LayoutMode: Center;
 
           Group {
-            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/WeaponsRanged.png");
+            Background: (TexturePath: "../Bow.png");
             Anchor: (Width: 50, Height: 50);
           }
         }
@@ -109,7 +109,7 @@ $C.@DecoratedContainer {
           LayoutMode: Center;
 
           Group {
-            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/WeaponsCrude.png");
+            Background: (TexturePath: "../Battleaxe.png");
             Anchor: (Width: 50, Height: 50);
           }
         }
@@ -146,7 +146,7 @@ $C.@DecoratedContainer {
           LayoutMode: Center;
 
           Group {
-            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/Resources.png");
+            Background: (TexturePath: "../Tool_Pickaxe_Iron.png");
             Anchor: (Width: 50, Height: 50);
           }
         }
@@ -179,7 +179,7 @@ $C.@DecoratedContainer {
           LayoutMode: Center;
 
           Group {
-            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/ArmourMetal.png");
+            Background: (TexturePath: "../Tool_Hammer_Iron.png");
             Anchor: (Width: 50, Height: 50);
           }
         }
@@ -212,7 +212,7 @@ $C.@DecoratedContainer {
           LayoutMode: Center;
 
           Group {
-            Background: (TexturePath: "Common/Icons/CraftingCategories/Workbench/Tools.png");
+            Background: (TexturePath: "../Weapon_Axe_Iron.png");
             Anchor: (Width: 50, Height: 50);
           }
         }

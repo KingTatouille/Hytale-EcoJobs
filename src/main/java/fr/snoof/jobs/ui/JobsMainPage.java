@@ -54,18 +54,17 @@ public class JobsMainPage extends InteractiveCustomUIPage<JobsMainPage.JobsGuiDa
             boolean joined = player.hasJoinedJob(type);
             String jobName = type.name();
 
+            System.out.println("DEBUG: " + jobName + " joined=" + joined);
+
             // Toggle button visibility
             builder.set("#btnJoin" + jobName + ".Visible", !joined);
             builder.set("#btnLeave" + jobName + ".Visible", joined);
 
-            // Bind buttons
-            if (!joined) {
-                eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#btnJoin" + jobName,
-                        EventData.of("Button", "Join:" + jobName));
-            } else {
-                eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#btnLeave" + jobName,
-                        EventData.of("Button", "Leave:" + jobName));
-            }
+            // Bind buttons (Always bind both to ensure UI updates work correctly)
+            eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#btnJoin" + jobName,
+                    EventData.of("Button", "Join:" + jobName));
+            eventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#btnLeave" + jobName,
+                    EventData.of("Button", "Leave:" + jobName));
 
             // Level info
             if (joined) {
@@ -98,13 +97,36 @@ public class JobsMainPage extends InteractiveCustomUIPage<JobsMainPage.JobsGuiDa
 
                 if (action.equals("Join")) {
                     if (jobManager.assignJob(pRef, jobName)) {
-                        pRef.sendMessage(MessageUtil.success("Job " + jobName + " rejoint !"));
+                        // Close UI and notify
+                        this.close();
+
+                        // Send Notification
+                        JobType type = JobType.fromString(jobName);
+                        if (type != null) {
+                            jobManager.sendNotification(pRef, "Emploi rejoint !",
+                                    "Vous êtes maintenant " + type.getDisplayName(), type.getIconItem());
+                        }
+
+                        // TODO: Play Sound (API unknown)
+
+                        return;
                     } else {
                         pRef.sendMessage(MessageUtil.error("Impossible de rejoindre ce job."));
                     }
                 } else if (action.equals("Leave")) {
                     if (jobManager.removeJob(pRef, jobName)) {
-                        pRef.sendMessage(MessageUtil.info("Job " + jobName + " quitté."));
+                        // Close UI and notify
+                        this.close();
+
+                        JobType type = JobType.fromString(jobName);
+                        if (type != null) {
+                            jobManager.sendNotification(pRef, "Emploi quitté",
+                                    "Vous avez quitté le métier de " + type.getDisplayName(), type.getIconItem());
+                        }
+
+                        // TODO: Play Sound (API unknown)
+
+                        return;
                     } else {
                         pRef.sendMessage(MessageUtil.error("Impossible de quitter ce job."));
                     }
